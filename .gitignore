@@ -2,5 +2,6 @@
 .env
 venv
 uwsgi.log
+access.log
 uwsgi.sock
 *__pycache__*
