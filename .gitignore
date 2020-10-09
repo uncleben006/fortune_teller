@@ -1,0 +1,6 @@
+.idea
+.env
+venv
+uwsgi.log
+uwsgi.sock
+*__pycache__*
