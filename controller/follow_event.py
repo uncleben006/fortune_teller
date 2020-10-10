@@ -5,9 +5,8 @@ from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
 from helper.utils import is_user
 
+# start app
 app = Flask(__name__)
-
-# load env file
 load_dotenv(os.path.join(os.getcwd(), '.env'))
 
 # Init Redis
