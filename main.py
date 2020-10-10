@@ -1,36 +1,27 @@
+import os
+import logging
+from datetime import datetime
+from dotenv import load_dotenv
+
+# flask
 from flask import Flask, request, abort
 
-from linebot import (
-    LineBotApi, WebhookHandler, WebhookParser
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, FollowEvent, )
+# line sdk
+from linebot import (LineBotApi, WebhookHandler, WebhookParser)
+from linebot.exceptions import (InvalidSignatureError)
+from linebot.models import (MessageEvent, TextMessage, TextSendMessage, FollowEvent)
 
-from dotenv import load_dotenv
-from datetime import datetime
-import os
-import redis
-import logging
-
+# custom module
 from controller import follow_event
 from helper.utils import get_channel, is_user
 
-# load env file
-load_dotenv(os.path.join(os.getcwd(), '.env'))
-
-# Init Redis
-redis_url = os.getenv('REDIS_URL')
-r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
-
+# start app
 app = Flask(__name__)
+load_dotenv(os.path.join(os.getcwd(), '.env'))
 
 # Line bot config
 line_bot_api = LineBotApi('channel_access_token')
 handler = WebhookHandler('channel_secret')
-channel_email = None
 
 # log config
 logging.basicConfig(filename = 'var/access.log',
@@ -55,7 +46,6 @@ def index_html():
 def callback(channel_id):
     global line_bot_api
     global handler
-    global channel_email
 
     # Query channel information using channel_id
     app.logger.info("Channel_id from Webhook: " + channel_id)

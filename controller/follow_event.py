@@ -1,7 +1,18 @@
+import os
+import redis
 from flask import Flask
+from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
 from helper.utils import is_user
+
 app = Flask(__name__)
+
+# load env file
+load_dotenv(os.path.join(os.getcwd(), '.env'))
+
+# Init Redis
+redis_url = os.getenv('REDIS_URL')
+r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
 
 
 def handle(event, line_bot_api):
@@ -21,10 +32,10 @@ def handle(event, line_bot_api):
                 TextSendMessage(text = '[客製] - 請輸入您的姓名'),
             ]
         )
-        # TODO: redis 暫存 user 狀態
-        # has_name
-        # has_birthday
-        # has_birthtime
+
+        # use redis to update user status
+        r.set(user_id + ':status', 'followed')
+
     else:
         # TODO: 如果 user_id 已經存在於資料庫中，則直接取出其名稱並顯示歡迎訊息
         line_bot_api.reply_message(

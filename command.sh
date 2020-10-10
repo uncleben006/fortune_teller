@@ -21,10 +21,12 @@ docker exec -it fortune_teller bash
 # Bind soft link for project Nginx config
 # Remove default Nginx config
 # Start Nginx service
+# Start Redis server
 uwsgi uwsgi.ini
 ln -s /etc/nginx/sites-available/fortune_nginx.conf /etc/nginx/sites-enabled/fortune_nginx.conf
 rm /etc/nginx/sites-enabled/default
 service nginx start
+redis-server &
 
 ########## local develop with docker ############
 
