@@ -1,6 +1,5 @@
 import os
 import redis
-import query_string
 from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage, TemplateSendMessage, ConfirmTemplate, PostbackAction, MessageAction
@@ -16,13 +15,14 @@ r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
 
 def handle(event, line_bot_api):
     user_profile = line_bot_api.get_profile(event.source.user_id)
-    app.logger.info("User [" + user_profile.user_id + "] has send message: " + event.message.text)
     user_id = user_profile.user_id
+    app.logger.info("User [" + user_id + "] has send message: " + event.message.text)
     user_status = r.get(user_id + ':status')
 
     if user_status:
         if user_status == 'followed':  # 若用戶現在的狀態是「剛追蹤」
             confirm_name(event, line_bot_api, user_status)
+            r.set(user_id + ':status', 'confirm_name')
 
 
 def confirm_name(event, line_bot_api, user_status):
@@ -36,12 +36,12 @@ def confirm_name(event, line_bot_api, user_status):
                     PostbackAction(
                         label = '是',
                         display_text = '是',
-                        data = 'action=yes&status=' + user_status
+                        data = 'action=confirm_name&reply=yes&name=' + event.message.text
                     ),
                     PostbackAction(
                         label = '否',
                         display_text = '否',
-                        data = 'action=no&status=' + user_status
+                        data = 'action=confirm_name&reply=no'
                     )
                 ]
             )

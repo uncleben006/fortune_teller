@@ -9,10 +9,10 @@ from flask import Flask, request, abort
 # line sdk
 from linebot import (LineBotApi, WebhookHandler, WebhookParser)
 from linebot.exceptions import (InvalidSignatureError)
-from linebot.models import (MessageEvent, TextMessage, FollowEvent)
+from linebot.models import (MessageEvent, TextMessage, FollowEvent, PostbackEvent)
 
 # custom module
-from controller import follow_event, message_event
+from controller import follow_event, message_event, postback_event
 from helper.utils import get_channel
 
 # start app
@@ -77,6 +77,11 @@ def callback(channel_id):
 @handler.add(MessageEvent, message = TextMessage)
 def handle_message(event):
     message_event.handle(event, line_bot_api)
+
+
+@handler.add(PostbackEvent)
+def handle_message(event):
+    postback_event.handle(event, line_bot_api)
 
 
 @handler.add(FollowEvent)
