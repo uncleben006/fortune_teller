@@ -1,4 +1,6 @@
 import os
+import json
+import redis
 import logging
 from datetime import datetime
 from dotenv import load_dotenv
@@ -13,11 +15,15 @@ from linebot.models import (MessageEvent, TextMessage, FollowEvent, PostbackEven
 
 # custom module
 from controller import follow_event, message_event, postback_event
-from helper.utils import get_channel
+from helper import utils
 
 # start app
 app = Flask(__name__)
 load_dotenv(os.path.join(os.getcwd(), '.env'))
+
+# Init Redis
+redis_url = os.getenv('REDIS_URL')
+r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
 
 # Line bot config
 line_bot_api = LineBotApi('channel_access_token')
@@ -49,7 +55,7 @@ def callback(channel_id):
 
     # Query channel information using channel_id
     app.logger.info("Channel_id from Webhook: " + channel_id)
-    channel_secret, channel_access_token = get_channel(channel_id)
+    channel_secret, channel_access_token = utils.get_channel(channel_id)
 
     # start up line_bot_api and handler
     line_bot_api = LineBotApi(channel_access_token)
@@ -61,6 +67,10 @@ def callback(channel_id):
     # get request body as text
     body = request.get_data(as_text = True)
     app.logger.info("Request body: " + body)
+
+    # bind user_id and channel_id
+    user_id = json.loads(body)['events'][0]['source']['userId']
+    r.set(user_id + ':channel_id', channel_id)
 
     # handle webhook body
     try:

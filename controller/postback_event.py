@@ -4,6 +4,7 @@ import query_string
 from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage, TemplateSendMessage, ConfirmTemplate, PostbackAction, ButtonsTemplate
+from helper import utils
 
 # start app
 app = Flask(__name__)
@@ -69,16 +70,19 @@ def handle(event, line_bot_api):
         if user_status == 'confirm_user_info' and postback['action'] == 'confirm_user_info':
 
             if postback['reply'] == 'yes':
+
+                r.set(user_id + ':status', 'contacted')
+
+                channel_id = r.get(user_id + ':channel_id')
                 user_name = r.get(user_id + ':name')
                 user_gender = r.get(user_id + ':gender')
                 user_birth_day = r.get(user_id + ':birth_day')
                 user_birth_time = r.get(user_id + ':birth_time')
 
                 show_menu(event, line_bot_api, user_name)
-                r.set(user_id + ':status', 'contacted')
 
-                # TODO: user info 存入 postgreSQL
-                # store_user_info()
+                # Store user info after complete the first stage of the info collection
+                utils.store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day, user_birth_time, 'contacted')
 
             if postback['reply'] == 'no':
                 previous_status_text = '請輸入您的姓名。'

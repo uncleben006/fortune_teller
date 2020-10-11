@@ -3,7 +3,7 @@ import redis
 from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
-from helper.utils import is_user
+from helper import utils
 
 # start app
 app = Flask(__name__)
@@ -19,7 +19,7 @@ def handle(event, line_bot_api):
     user_profile = line_bot_api.get_profile(event.source.user_id)
     app.logger.info("A user has followed: " + str(user_profile))
     user_id = user_profile.user_id
-    if not is_user(user_id):
+    if not utils.is_user(user_id):
         line_bot_api.reply_message(
             event.reply_token,
             [

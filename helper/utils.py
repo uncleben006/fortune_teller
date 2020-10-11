@@ -32,3 +32,32 @@ def is_user(user_id):
     cursor.close()
     conn.close()
     return result
+
+
+# Store user info after complete the first stage info collection
+def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day, user_birth_time, user_status):
+    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO line_user \
+    VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}') \
+    ON CONFLICT (id) DO UPDATE \
+    SET channel_id = '{channel_id}', name = '{user_name}', \
+    gender = '{user_gender}', birth_day = '{user_birth_day}', \
+    birth_time = '{user_birth_time}', status = '{user_status}' \
+    WHERE line_user.id = '{user_id}' "
+
+    sql = sql.format(channel_id = channel_id,
+                     user_id = user_id,
+                     user_name = user_name,
+                     user_gender = user_gender,
+                     user_birth_day = user_birth_day,
+                     user_birth_time = user_birth_time,
+                     user_status = user_status)
+    app.logger.info("Insert user info: " + sql)
+
+    cursor.execute(sql)
+    conn.commit()
+
+    cursor.close()
+    conn.close()
