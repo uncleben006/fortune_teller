@@ -29,34 +29,12 @@ def handle(event, line_bot_api):
         if user_status == 'input_name':
             confirm_name(event, line_bot_api)
             r.set(user_id + ':status', 'confirm_name')
-        if user_status == 'input_birthday':
-            confirm_birthday(event, line_bot_api)
-            r.set(user_id + ':status', 'confirm_birthday')
-
-
-def confirm_birthday(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '請確認國曆生日',
-            template = ConfirmTemplate(
-                text = '您的國曆生日為 ' + event.message.text[:4] + '年' + event.message.text[4:6] + '月' + event.message.text[
-                                                                                                   -2:] + '日 嗎？',
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_birthday&reply=yes&name=' + event.message.text
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_birthday&reply=no'
-                    )
-                ]
-            )
-        )
-    )
+        if user_status == 'input_birth_day':
+            confirm_birth_day(event, line_bot_api)
+            r.set(user_id + ':status', 'confirm_birth_day')
+        if user_status == 'input_birth_time':
+            confirm_birth_time(event, line_bot_api)
+            r.set(user_id + ':status', 'confirm_birth_time')
 
 
 def confirm_name(event, line_bot_api):
@@ -76,6 +54,55 @@ def confirm_name(event, line_bot_api):
                         label = '否',
                         display_text = '否',
                         data = 'action=confirm_name&reply=no'
+                    )
+                ]
+            )
+        )
+    )
+
+
+def confirm_birth_day(event, line_bot_api):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TemplateSendMessage(
+            alt_text = '請確認國曆生日',
+            template = ConfirmTemplate(
+                text = '您的國曆生日為 ' +
+                       event.message.text[:4] + '年' + event.message.text[4:6] + '月' + event.message.text[-2:] + '日 嗎？',
+                actions = [
+                    PostbackAction(
+                        label = '是',
+                        display_text = '是',
+                        data = 'action=confirm_birth_day&reply=yes&birth_day=' + event.message.text
+                    ),
+                    PostbackAction(
+                        label = '否',
+                        display_text = '否',
+                        data = 'action=confirm_birth_day&reply=no'
+                    )
+                ]
+            )
+        )
+    )
+
+
+def confirm_birth_time(event, line_bot_api):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TemplateSendMessage(
+            alt_text = '請確認出生時間',
+            template = ConfirmTemplate(
+                text = '您的出生時間為 ' + event.message.text + ' 嗎？',
+                actions = [
+                    PostbackAction(
+                        label = '是',
+                        display_text = '是',
+                        data = 'action=confirm_birth_time&reply=yes&birth_time=' + event.message.text
+                    ),
+                    PostbackAction(
+                        label = '否',
+                        display_text = '否',
+                        data = 'action=confirm_birth_time&reply=no'
                     )
                 ]
             )

@@ -27,8 +27,8 @@ def handle(event, line_bot_api):
                     original_content_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
                     preview_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg'
                 ),
-                TextSendMessage(text = '[客製] - 歡迎來到「唐綺陽運勢所」，我們將提供您的運勢預報'),
-                TextSendMessage(text = '[客製] - 請輸入您的姓名'),
+                TextSendMessage(text = '歡迎來到「唐綺陽運勢所」，我們將提供您的運勢預報'),
+                TextSendMessage(text = '請輸入您的姓名'),
             ]
         )
 
@@ -44,6 +44,6 @@ def handle(event, line_bot_api):
                     original_content_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
                     preview_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg'
                 ),
-                TextSendMessage(text = '[客製] - 您好，好久不見'),
+                TextSendMessage(text = '您好，好久不見'),
             ]
         )
