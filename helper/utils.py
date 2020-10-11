@@ -34,6 +34,20 @@ def is_user(user_id):
     return result
 
 
+# Get user info
+def get_user(user_id):
+    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+    cursor = conn.cursor()
+    sql = "SELECT channel_id, id, name, gender, birth_day, birth_time, status FROM line_user WHERE id = '%s' " % user_id
+    app.logger.info("Start query user: " + sql)
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    app.logger.info("Result: " + str(result))
+    cursor.close()
+    conn.close()
+    return result
+
+
 # Store user info after complete the first stage info collection
 def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day, user_birth_time, user_status):
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))

@@ -2,6 +2,7 @@ import os
 import redis
 import query_string
 from flask import Flask
+from datetime import date
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage, TemplateSendMessage, ConfirmTemplate, PostbackAction, ButtonsTemplate
 from helper import utils
@@ -70,7 +71,6 @@ def handle(event, line_bot_api):
         if user_status == 'confirm_user_info' and postback['action'] == 'confirm_user_info':
 
             if postback['reply'] == 'yes':
-
                 r.set(user_id + ':status', 'contacted')
 
                 channel_id = r.get(user_id + ':channel_id')
@@ -88,6 +88,109 @@ def handle(event, line_bot_api):
                 previous_status_text = '請輸入您的姓名。'
                 reply_text_message(event, line_bot_api, previous_status_text)
                 r.set(user_id + ':status', 'input_name')
+
+        if user_status == 'contacted' and postback['action'] == 'show_menu':
+            user_name = r.get(user_id + ':name')
+            show_menu(event, line_bot_api, user_name)
+        if user_status == 'contacted' and postback['action'] == 'service_1':
+            app.logger.info('service_1')
+            service_1_menu(event, line_bot_api)
+        if user_status == 'contacted' and postback['action'] == 'wealth_fate':
+            app.logger.info('wealth_fate')
+            user_name = r.get(user_id + ':name')
+            wealth_fate_result(event, line_bot_api, user_name)
+        if user_status == 'contacted' and postback['action'] == 'love_fate':
+            app.logger.info('love_fate')
+            user_name = r.get(user_id + ':name')
+            love_fate_result(event, line_bot_api, user_name)
+
+        if user_status == 'contacted' and postback['action'] == 'service_2':
+            app.logger.info('service_2')
+        if user_status == 'contacted' and postback['action'] == 'service_3':
+            app.logger.info('service_3')
+        if user_status == 'contacted' and postback['action'] == 'service_4':
+            app.logger.info('service_4')
+
+
+def love_fate_result(event, line_bot_api, user_name):
+    today = date.today()
+    text = '[' + user_name + '] ' + str(today.month) + '月' + str(today.day) +\
+           '日愛情運勢\n\n' +\
+           '今日愛情運勢：★★★★☆\n' +\
+           '今日愛情數字：6\n' +\
+           '今日愛情時間：09:00-10:00\n' +\
+           '今日愛情顏色：水晶紫\n\n' +\
+           '明日愛情運勢：★★★★★\n' +\
+           '明日愛情數字：9\n' +\
+           '明日愛情時間：19:00-20:00\n' +\
+           '明日愛情顏色：湖水藍\n\n' +\
+           '說明：顏色包含衣服、包包、鞋子、配件等皆可\n\n' +\
+           '[ △△ 運命所 OO 老師關心您，過去 30 天有 20 天見到過您 ]'
+    line_bot_api.reply_message(
+        event.reply_token,
+        [
+            TextSendMessage(text = text),
+            service_1_menu_template()
+        ]
+    )
+
+
+def wealth_fate_result(event, line_bot_api, user_name):
+    today = date.today()
+    text = '[' + user_name + '] ' + str(today.month) + '月' + str(today.day) +\
+           '日財運運勢\n\n' +\
+           '今日財運運勢：★★★★☆\n' +\
+           '今日財運數字：6\n' +\
+           '今日財運時間：09:00-10:00\n' +\
+           '今日財運顏色：水晶紫\n\n' +\
+           '明日財運運勢：★★★★★\n' +\
+           '明日財運數字：9\n' +\
+           '明日財運時間：19:00-20:00\n' +\
+           '明日財運顏色：湖水藍\n\n' +\
+           '說明：顏色包含衣服、包包、鞋子、配件等皆可\n\n' +\
+           '[ △△ 運命所 OO 老師關心您，過去 30 天有 20 天見到過您 ]'
+    line_bot_api.reply_message(
+        event.reply_token,
+        [
+            TextSendMessage(text = text),
+            service_1_menu_template()
+        ]
+    )
+
+
+def service_1_menu(event, line_bot_api):
+    line_bot_api.reply_message(
+        event.reply_token,
+        service_1_menu_template()
+    )
+
+
+def service_1_menu_template():
+    return TemplateSendMessage(
+        alt_text = 'Buttons template',
+        template = ButtonsTemplate(
+            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
+            title = 'OO 老師 協助您提升運勢',
+            text = '請選擇想要提升哪種運勢？',
+            actions = [
+                PostbackAction(
+                    label = '提升財運運勢',
+                    display_text = '提升財運運勢',
+                    data = 'action=wealth_fate'
+                ),
+                PostbackAction(
+                    label = '提升愛情運勢',
+                    display_text = '提升愛情運勢',
+                    data = 'action=love_fate'
+                ),
+                PostbackAction(
+                    label = '回主選單',
+                    display_text = '回主選單',
+                    data = 'action=show_menu'
+                ),
+            ]
+        )
+    )
 
 
 def reply_text_message(event, line_bot_api, previous_status_text):
@@ -186,4 +289,3 @@ def show_menu(event, line_bot_api, user_name):
             )
         )
     )
-
