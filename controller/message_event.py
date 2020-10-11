@@ -3,6 +3,7 @@ import redis
 from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage, TemplateSendMessage, ConfirmTemplate, PostbackAction, MessageAction
+from controller.postback_event import service_2_menu_template
 
 # start app
 app = Flask(__name__)
@@ -35,6 +36,7 @@ def handle(event, line_bot_api):
         )
 
     if user_status:
+        # users data collecting
         if user_status == 'input_name':
             confirm_name(event, line_bot_api)
             r.set(user_id + ':status', 'confirm_name')
@@ -44,6 +46,30 @@ def handle(event, line_bot_api):
         if user_status == 'input_birth_time':
             confirm_birth_time(event, line_bot_api)
             r.set(user_id + ':status', 'confirm_birth_time')
+
+        # services
+        if user_status == 'input_fate_num':
+            # TODO: query line user by fate number
+            fate_num_result(event, line_bot_api, user_id)
+            r.set(user_id + ':status', 'contacted')
+
+
+def fate_num_result(event, line_bot_api, user_id):
+    app.logger.info('Fate num:' + event.message.text)
+    user_name = r.get(user_id + ':name')
+    text = '[王小明] 對 [' + user_name + '] 的貴人指數分析如下：\n\n'\
+                                     '財運貴人指數：★★★★☆\n'\
+                                     '事業貴人指數：★★★☆☆\n'\
+                                     '愛情貴人指數：★★☆☆☆\n\n'\
+                                     '結論：\n'\
+                                     '[王小明] 對 [' + user_name + '] 在財運上最有幫助。'
+    line_bot_api.reply_message(
+        event.reply_token,
+        [
+            TextSendMessage(text = text),
+            service_2_menu_template()
+        ]
+    )
 
 
 def confirm_name(event, line_bot_api):
