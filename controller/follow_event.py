@@ -3,6 +3,8 @@ import redis
 from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
+
+from controller.postback_event import show_menu
 from helper import utils
 
 # start app
@@ -36,14 +38,15 @@ def handle(event, line_bot_api):
         r.set(user_id + ':status', 'input_name')
 
     else:
-        # TODO: 如果 user_id 已經存在於資料庫中，則直接取出其名稱並顯示歡迎訊息
-        line_bot_api.reply_message(
-            event.reply_token,
-            [
-                ImageSendMessage(
-                    original_content_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
-                    preview_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg'
-                ),
-                TextSendMessage(text = '您好，好久不見'),
-            ]
-        )
+        # Show the menu if user is exist in database.
+        user_name = r.get(user_id + ':name')
+        if not user_name:
+            user_data = utils.get_user(user_id)
+            r.set(user_id + ':channel_id', user_data[0])
+            r.set(user_id + ':name', user_data[2])
+            r.set(user_id + ':gender',user_data[3])
+            r.set(user_id + ':birth_day',user_data[4])
+            r.set(user_id + ':birth_time',user_data[5])
+            r.set(user_id + ':status',user_data[6])
+            user_name = user_data[2]
+        show_menu(event, line_bot_api, user_name)
