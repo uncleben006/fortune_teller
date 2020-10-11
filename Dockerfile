@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV TZ="Asia/Taipei"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends apt-utils && \
