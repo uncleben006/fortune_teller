@@ -25,6 +25,15 @@ def handle(event, line_bot_api):
             TextSendMessage(text = user_status)
         )
 
+    if event.message.text == 'clear':
+        # delete redis which key prefix is current user_id
+        for key in r.scan_iter(user_id + ":*"):
+            r.delete(key)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text = 'delete redis cache')
+        )
+
     if user_status:
         if user_status == 'input_name':
             confirm_name(event, line_bot_api)
