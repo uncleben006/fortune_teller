@@ -19,13 +19,47 @@ def handle(event, line_bot_api):
     app.logger.info("User [" + user_id + "] has send message: " + event.message.text)
     user_status = r.get(user_id + ':status')
 
+    if event.message.text == 'status':
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text = user_status)
+        )
+
     if user_status:
-        if user_status == 'followed':  # 若用戶現在的狀態是「剛追蹤」
-            confirm_name(event, line_bot_api, user_status)
+        if user_status == 'input_name':
+            confirm_name(event, line_bot_api)
             r.set(user_id + ':status', 'confirm_name')
+        if user_status == 'input_birthday':
+            confirm_birthday(event, line_bot_api)
+            r.set(user_id + ':status', 'confirm_birthday')
 
 
-def confirm_name(event, line_bot_api, user_status):
+def confirm_birthday(event, line_bot_api):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TemplateSendMessage(
+            alt_text = '請確認國曆生日',
+            template = ConfirmTemplate(
+                text = '您的國曆生日為 ' + event.message.text[:4] + '年' + event.message.text[4:6] + '月' + event.message.text[
+                                                                                                   -2:] + '日 嗎？',
+                actions = [
+                    PostbackAction(
+                        label = '是',
+                        display_text = '是',
+                        data = 'action=confirm_birthday&reply=yes&name=' + event.message.text
+                    ),
+                    PostbackAction(
+                        label = '否',
+                        display_text = '否',
+                        data = 'action=confirm_birthday&reply=no'
+                    )
+                ]
+            )
+        )
+    )
+
+
+def confirm_name(event, line_bot_api):
     line_bot_api.reply_message(
         event.reply_token,
         TemplateSendMessage(

@@ -33,7 +33,7 @@ def handle(event, line_bot_api):
         )
 
         # use redis to update user status
-        r.set(user_id + ':status', 'followed')
+        r.set(user_id + ':status', 'input_name')
 
     else:
         # TODO: 如果 user_id 已經存在於資料庫中，則直接取出其名稱並顯示歡迎訊息
