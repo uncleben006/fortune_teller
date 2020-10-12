@@ -9,6 +9,7 @@ from controller.crm import confirm_gender, confirm_user_info
 from controller.service_1 import love_fate_result, wealth_fate_result, service_1_menu
 from controller.service_2 import ask_instructions, service_2_menu
 from controller.service_3 import service_3_menu, line_booking, confirm_book_time, booking_result
+from controller.service_4 import return_fate_num, service_4_menu
 from controller.template import main_menu_template
 from helper import utils
 
@@ -31,6 +32,9 @@ def handle(event, line_bot_api):
     user_status = r.get(channel_id + user_id + ':status')
 
     if user_status:
+
+        if postback['action'] == 'confirm_gender' and postback['status'] == 'confirm_gender':
+            user_status = 'confirm_gender'
 
         if user_status == 'confirm_name' and postback['action'] == 'confirm_name':
 
@@ -156,7 +160,9 @@ def handle(event, line_bot_api):
             confirm_book_time(event, line_bot_api, channel_id, user_id, book_date, weekday, time)
 
         if user_status == 'contacted' and postback['action'] == 'confirm_book_time':
+            app.logger.info('confirm_book_time')
             user_name = r.get(channel_id + user_id + ':name')
+
             if postback['reply'] == 'yes':
                 text = '['+user_name+'] 您好，請輸入您的電話號碼'
                 reply_text_message(event, line_bot_api, text)
@@ -165,7 +171,9 @@ def handle(event, line_bot_api):
                 show_menu(event, line_bot_api, user_name)
 
         if user_status == 'contacted' and postback['action'] == 'confirm_phone':
+            app.logger.info('confirm_phone')
             user_name = r.get(channel_id + user_id + ':name')
+
             if postback['reply'] == 'yes':
                 phone = postback['phone']
                 book_date = r.get(channel_id + user_id + ':date')
@@ -183,6 +191,12 @@ def handle(event, line_bot_api):
 
         if user_status == 'contacted' and postback['action'] == 'service_4':
             app.logger.info('service_4')
+            service_4_menu(event, line_bot_api)
+
+        if user_status == 'contacted' and postback['action'] == 'query_fate_num':
+            app.logger.info('query_fate_num')
+            # TODO: 用 user_id 跟 channel_id query 出 fate_num
+            return_fate_num(event, line_bot_api)
 
 
 def reply_text_message(event, line_bot_api, text):

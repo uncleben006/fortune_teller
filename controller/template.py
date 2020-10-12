@@ -8,7 +8,7 @@ from linebot.models import TemplateSendMessage, ButtonsTemplate, PostbackAction,
 
 def main_menu_template(user_name):
     return TemplateSendMessage(
-        alt_text = 'Buttons template',
+        alt_text = '運命所 OO 老師',
         template = ButtonsTemplate(
             thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
             title = '運命所 OO 老師',
@@ -150,7 +150,7 @@ def line_booking_template():
     week_dict = {0: '一', 1: '二', 2: '三', 3: '四', 4: '五', 5: '六', 6: '日'}
 
     return TemplateSendMessage(
-        alt_text = 'Carousel template',
+        alt_text = '預約時間',
         template = CarouselTemplate(
             columns = [
                 CarouselColumn(
@@ -350,6 +350,7 @@ def fate_num_result_text(user_name):
     return text
 
 
+# TODO: 計算用戶過去三十天上線次數
 def love_fate_text(user_name):
     today = date.today()
     text = '[' + user_name + '] ' + str(today.month) + '月' + str(today.day) +\
