@@ -6,5 +6,3 @@ access.log
 uwsgi.sock
 *__pycache__*
 dump.rdb
-Procfile
-runtime.txt
