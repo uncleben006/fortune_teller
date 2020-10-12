@@ -1,29 +1,44 @@
-from dotenv import load_dotenv
-from datetime import datetime
-import psycopg2
 import os
+import json
+import redis
+import logging
+from datetime import datetime
+from dotenv import load_dotenv
 
+# flask
 from flask import Flask, request, abort
 
-from linebot import (
-    LineBotApi, WebhookHandler, WebhookParser
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-)
+# line sdk
+from linebot import (LineBotApi, WebhookHandler, WebhookParser)
+from linebot.exceptions import (InvalidSignatureError)
+from linebot.models import (MessageEvent, TextMessage, FollowEvent, PostbackEvent)
 
+# custom module
+from controller import follow_event, message_event, postback_event
+from helper import utils
 
-# load env file
+# start app
+app = Flask(__name__)
 load_dotenv(os.path.join(os.getcwd(), '.env'))
 
-app = Flask(__name__)
+# Init Redis
+redis_url = os.getenv('REDIS_URL')
+r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
 
-# # Line bot config
+# Line bot config
 line_bot_api = LineBotApi('channel_access_token')
 handler = WebhookHandler('channel_secret')
+
+# log config
+logging.basicConfig(filename = 'var/access.log',
+                    level = logging.DEBUG,
+                    format = '%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+# log example
+# app.logger.error("Something has gone very wrong")
+# app.logger.warning("You've been warned")
+# app.logger.info("Here's some info")
+# app.logger.debug("Meaningless debug information")
 
 
 @app.route('/', methods = ['GET'])
@@ -39,12 +54,8 @@ def callback(channel_id):
     global handler
 
     # Query channel information using channel_id
-    print("Channel_id from Webhook: ", channel_id)
-    result = get_channel(channel_id)
-    channel_id = result[0]
-    channel_email = result[1]
-    channel_secret = result[2]
-    channel_access_token = result[3]
+    app.logger.info("Channel_id from Webhook: " + channel_id)
+    channel_secret, channel_access_token = utils.get_channel(channel_id)
 
     # start up line_bot_api and handler
     line_bot_api = LineBotApi(channel_access_token)
@@ -56,6 +67,10 @@ def callback(channel_id):
     # get request body as text
     body = request.get_data(as_text = True)
     app.logger.info("Request body: " + body)
+
+    # set current channel_id
+    user_id = json.loads(body)['events'][0]['source']['userId']
+    r.set(user_id + ':channel_id', channel_id)
 
     # handle webhook body
     try:
@@ -69,25 +84,19 @@ def callback(channel_id):
     return 'OK'
 
 
-# Query channel information using channel_id
-def get_channel(channel_id):
-    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
-    cursor = conn.cursor()
-    sql = "SELECT id, email, secret, access_token FROM channel WHERE channel.id = '%s' " % channel_id
-    print("Start query channel: ", sql)
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    print("Result: ", result)
-    cursor.close()
-    conn.close()
-    return result
-
-
 @handler.add(MessageEvent, message = TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text = event.message.text))
+    message_event.handle(event, line_bot_api)
+
+
+@handler.add(PostbackEvent)
+def handle_message(event):
+    postback_event.handle(event, line_bot_api)
+
+
+@handler.add(FollowEvent)
+def handle_follow(event):
+    follow_event.handle(event, line_bot_api)
 
 
 if __name__ == "__main__":

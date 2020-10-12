@@ -1,0 +1,2168 @@
+{
+  "modelVersion": 1,
+  "backwardCompatibleModelVersion": 1,
+  "meta": {
+    "name": "LINE Bot",
+    "companyName": "LINE",
+    "category": "117"
+  },
+  "messages": [
+    {
+      "id": "edc1edc3-fb2c-4872-a876-5086e498f39e",
+      "type": "image",
+      "params": {
+        "originalContentUrl": {
+          "type": "url",
+          "url": "https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_01_small.png",
+          "file": {
+            "cloned": false,
+            "cloneId": null,
+            "id": "c6cbd90b-311e-48d6-88ec-9fc842336e35",
+            "name": "20170209180941-abd4be4bc139dcca5f19d8c5d92476db-tablet",
+            "type": "jpg",
+            "hash": "7ed033e60c22a51b78b62d5639c7e7674f83a56e"
+          }
+        },
+        "previewImageUrl": {
+          "type": "url",
+          "file": null
+        }
+      }
+    },
+    {
+      "id": "77c9f7c6-05a7-4d0a-8955-f3ef4804e57d",
+      "type": "text",
+      "name": "歡迎詞",
+      "params": {
+        "text": "歡迎來到「匡陽運命所」，我們將提供您的運勢預報。\n"
+      }
+    },
+    {
+      "id": "acc6d541-22ce-4de6-8691-ac5e9f00b78c",
+      "type": "text",
+      "name": "1.1. 請輸入您的姓名",
+      "params": {
+        "text": "請輸入您的姓名"
+      }
+    },
+    {
+      "id": "49b498e1-844a-4d64-925b-5385f0bccdf9",
+      "type": "confirm",
+      "name": "1.1.1 確認姓名",
+      "params": {
+        "text": "您的姓名是【林大頭】嗎？",
+        "actionLeft": {
+          "type": "message",
+          "label": "是",
+          "text": "是",
+          "data": "資料 1"
+        },
+        "actionRight": {
+          "type": "message",
+          "label": "否",
+          "text": "否",
+          "data": "資料 2"
+        }
+      }
+    },
+    {
+      "id": "065d8e2c-02f2-476c-b1f3-c5144ead7526",
+      "type": "text",
+      "name": "1.2. 要求輸入生日",
+      "params": {
+        "text": "【林大頭】您好，請填寫您的國曆生日。如1979年8月30日，請打 19790830 。\n"
+      }
+    },
+    {
+      "id": "21039508-9b4b-4616-bb2d-a36c9800e093",
+      "type": "confirm",
+      "name": "1.2.1 確認生日",
+      "params": {
+        "text": "您的國曆生日為 1979 年 8 月 30 日嗎？",
+        "actionLeft": {
+          "type": "message",
+          "label": "是",
+          "text": "是",
+          "data": "資料 1"
+        },
+        "actionRight": {
+          "type": "message",
+          "label": "否",
+          "text": "否",
+          "data": "資料 2"
+        }
+      }
+    },
+    {
+      "id": "65f400d4-278c-44f7-8df0-8803d1aa590c",
+      "type": "text",
+      "name": "1.3. 要求輸入生日時間",
+      "params": {
+        "text": "請填寫您的出生時間。如 晚上 11: 30 ，請打 23:30 。\n"
+      }
+    },
+    {
+      "id": "4e707cde-1316-4c28-bed1-5bbaec9b0aa4",
+      "type": "confirm",
+      "name": "1.3.1 確認生日時間",
+      "params": {
+        "text": "您的出生時間為 23:30 嗎？",
+        "actionLeft": {
+          "type": "message",
+          "label": "是",
+          "text": "是",
+          "data": "資料 1"
+        },
+        "actionRight": {
+          "type": "message",
+          "label": "否",
+          "text": "否",
+          "data": "資料 2"
+        }
+      }
+    },
+    {
+      "id": "774fbc9f-9eb1-4180-ac04-da8de7162a2d",
+      "type": "confirm",
+      "name": "1.4 確認所有資料",
+      "params": {
+        "text": "您是【林大頭】生日為 1979/08/30 23:30 ？",
+        "actionLeft": {
+          "type": "message",
+          "label": "是",
+          "text": "是",
+          "mode": "datetime"
+        },
+        "actionRight": {
+          "type": "message",
+          "label": "否",
+          "text": "否",
+          "mode": "datetime"
+        }
+      }
+    },
+    {
+      "id": "24c8a067-4ad3-4d09-a848-6b49250f9461",
+      "type": "text",
+      "name": "1.5 歡迎詞",
+      "params": {
+        "text": "【林大頭】您好，歡迎來到 OO 老師的好運勢官方帳號。你在這裡可以查詢：\n\n1. 今明二日要如何提升財運、愛情運及事業運\n2. 找出身邊的人誰是您的貴人？\n\n讓您天天都有好運勢。"
+      }
+    },
+    {
+      "id": "58f50ee3-d834-4602-932f-dd926f5a167d",
+      "type": "text",
+      "name": "1.6 老師另有一個官方帳號",
+      "params": {
+        "text": "因為這個帳號用來提升您的運勢用的，所以老師另有一個LINE官方帳號： XXXX 。\n\n請也加入這個官方帳號，有任何問題想要聯絡老師，請在 OO老師 的官方式帳號與 OO 老師聯絡哦！\n"
+      }
+    },
+    {
+      "id": "2f5d6d3e-b1c6-470f-b132-8413d74cf360",
+      "type": "buttons",
+      "name": "2. 預報主選單",
+      "params": {
+        "imageAspectRatio": "none",
+        "imageSize": "none",
+        "thumbnailImageUrl": {
+          "type": "url",
+          "url": "https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_10_small.png",
+          "file": null
+        },
+        "title": "△△運命所 OO 老師 ",
+        "text": "提升【林大頭】運勢服務",
+        "actionCount": 4,
+        "actions.0": {
+          "type": "message",
+          "label": "我要提升今明二日運勢",
+          "text": "我要提升今明二日運勢",
+          "mode": "datetime"
+        },
+        "actions.1": {
+          "type": "message",
+          "label": "我想找出誰是我的貴人",
+          "text": "我想找出誰是我的貴人",
+          "mode": "datetime"
+        },
+        "actions.2": {
+          "type": "message",
+          "label": "我想查詢老師諮詢時間",
+          "text": "我想查詢老師諮詢時間",
+          "mode": "datetime"
+        },
+        "actions.3": {
+          "type": "message",
+          "label": "重新輸入生日及其它功能",
+          "text": "重新輸入生日及其它功能",
+          "mode": "datetime"
+        }
+      }
+    },
+    {
+      "id": "4a000018-265c-4573-8288-d4cfb9af6f97",
+      "type": "text",
+      "name": "2.1 今日運勢",
+      "params": {
+        "text": "【林大頭】08月14日運勢\n\n開運數字：6\n開運時間：09:00-10:00\n開運顏色：水晶紫\n開運方位：正西方向\n今日運勢：★★★★☆\n\n得遇貴人提點，使原本不甚明朗的投資前景清晰化，不妨多向對方討教一些辨別小道消息的小技巧"
+      }
+    },
+    {
+      "id": "2db31f65-3af6-47cb-819f-59edc04de219",
+      "type": "buttons",
+      "name": "2.1.1 選擇今日運勢",
+      "params": {
+        "imageAspectRatio": "none",
+        "imageSize": "none",
+        "thumbnailImageUrl": {
+          "type": "url",
+          "url": "https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_09_small.png",
+          "file": null
+        },
+        "title": "OO 老師 協助您提升運勢",
+        "text": "請選擇想要提升哪種運勢？",
+        "actionCount": 3,
+        "actions.0": {
+          "type": "message",
+          "label": "提升財運運勢",
+          "text": "提升財運運勢",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "actions.1": {
+          "type": "message",
+          "label": "提升愛情運勢",
+          "text": "提升愛情運勢",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "actions.2": {
+          "type": "message",
+          "label": "回主選單",
+          "text": "回主選單",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "actions.3": {
+          "type": "message",
+          "label": "回主選單",
+          "text": "回主選單",
+          "data": "資料 4",
+          "mode": "datetime"
+        }
+      }
+    },
+    {
+      "id": "6acfd114-1c75-4f90-bac3-1abfcb29f06e",
+      "type": "text",
+      "name": "2.1.2 今明二日財運運勢",
+      "params": {
+        "text": "【林大頭】08月14日財運運勢\n\n今日財運運勢：★★★★☆\n今日財運數字：6\n今日財運時間：09:00-10:00\n今日財運顏色：水晶紫\n\n明日財運運勢：★★★★★\n明日財運數字：9\n明日財運時間：19:00-20:00\n明日財運顏色：湖水藍\n\n說明：顏色包含衣服，包包、鞋子、配件等皆可。\n\n【 △△ 運命所 OO 老師關心您，過去 30 天有 20 天見到您】"
+      }
+    },
+    {
+      "id": "4036e003-811d-4639-9d80-4b32abc55e8e",
+      "type": "text",
+      "name": "2.1.3 今日愛情運勢",
+      "params": {
+        "text": "愛情運勢：★★★☆☆ \n正是與另一半好好約會增進感情的時候，別把另一半冷落了，用你的愛溫暖他吧。\n\n【匡陽運命所 OO 老師關心您】"
+      }
+    },
+    {
+      "id": "2ca562cf-9c13-42ca-a8ec-a7d9555e47f3",
+      "type": "text",
+      "name": "2.1.4 今日事情運勢",
+      "params": {
+        "text": "事業運勢：★★★★☆ \n行動力十足，有利於新計劃的執行，如果能放開心胸接受不同意見，成功機會更大。\n\n【匡陽運命所 OO 老師關心您】"
+      }
+    },
+    {
+      "id": "1a64ad58-7cda-4d7a-bcd6-552d4fb745b8",
+      "type": "text",
+      "name": "2.2 服務時段",
+      "params": {
+        "text": "諮詢時間：\n星期一~星期五\n早： 8:30~11:30 \n午： 14:00~17:00   \n晚： 17:30~20:30\n\n地址：OO市OO區OO路OO號\n預約電話： 0912345678\n\n\n"
+      }
+    },
+    {
+      "id": "f56937c4-4cda-440a-80a4-e6a172d2c35a",
+      "type": "text",
+      "name": "2.2.1 目前老師還有空的時間",
+      "params": {
+        "text": "最近一周 OO 老師可預約的時間如下：\n\n1. 8/15（五） 14:00、16:00、19:00\n2. 8/16（六） 10:00、11:00\n3. 8/17（日） 10:00、14:00、19:00\n4. 8/18（一） 10:00、14:00、19:00\n5. 8/19（二） 10:00、14:00、19:00\n6. 8/20（三） 10:00、14:00、19:00\n7. 8/21（四） 10:00、14:00、19:00\n\n"
+      }
+    },
+    {
+      "id": "e4e45b70-41e0-4422-ad16-e531b0c2ff3e",
+      "type": "buttons",
+      "name": "2.2.3 您可以使用以下方式預約",
+      "params": {
+        "imageAspectRatio": "none",
+        "imageSize": "none",
+        "thumbnailImageUrl": {
+          "type": "url",
+          "url": "https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_07_small.png",
+          "file": null
+        },
+        "title": "預約 OO 老師",
+        "text": "您可以使用以下方式預約",
+        "actionCount": 3,
+        "actions.0": {
+          "type": "uri",
+          "label": "線上預約",
+          "text": "現在LINE預約",
+          "uri": "http://demos.net-factor.com/appointment-hour-booking/",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "actions.1": {
+          "type": "message",
+          "label": "電話預約",
+          "text": "我想電話預約",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "actions.2": {
+          "type": "message",
+          "label": "回主選單",
+          "text": "回主選單",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "actions.3": {
+          "type": "message",
+          "label": "回主選單",
+          "text": "回主選單",
+          "data": "資料 4",
+          "mode": "datetime"
+        }
+      }
+    },
+    {
+      "id": "ec603be7-fbff-490a-9755-8ce2fdd31bb6",
+      "type": "text",
+      "params": {
+        "text": "請上傳已繳費的照片，或輸入匯款帳號的後5碼。"
+      }
+    },
+    {
+      "id": "ae8d2e8d-2099-4a9a-ae96-ab3a7335f703",
+      "type": "carousel",
+      "name": "2.2.4 選預約時段",
+      "params": {
+        "imageAspectRatio": "none",
+        "imageSize": "none",
+        "columnCount": 8,
+        "actionCount": 3,
+        "useThumbnailImage": true,
+        "useTitle": false,
+        "thumbnail.0": {
+          "type": "url",
+          "url": "https://i.pinimg.com/originals/9e/bf/24/9ebf24a0b925137494ec586f1dbfce2d.jpg",
+          "file": null
+        },
+        "title.0": "標題",
+        "text.0": "8月15日（六）預約時間",
+        "action.0.0": {
+          "type": "message",
+          "label": "14:00",
+          "text": "預約8月15日（六）14:00",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.0.1": {
+          "type": "message",
+          "label": "16:00",
+          "text": "預約8月15日（六）16:00",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.0.2": {
+          "type": "message",
+          "label": "19:00",
+          "text": "預約8月15日（六）19:00",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "thumbnail.1": {
+          "type": "url",
+          "url": "https://static.vecteezy.com/system/resources/previews/000/135/921/original/vector-sunday-lettering-watercolor.jpg",
+          "file": null
+        },
+        "title.1": "標題",
+        "text.1": "8月16日（日）預約時間",
+        "action.1.0": {
+          "type": "message",
+          "label": "10:00",
+          "text": "預約8月16日（日）10:00",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.1.1": {
+          "type": "message",
+          "label": "11:00",
+          "text": "預約8月16日（日）11:00",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.1.2": {
+          "type": "message",
+          "label": "無",
+          "text": "無",
+          "data": "資料 3",
+          "mode": "datetime",
+          "initial": "2020-08-14T16:18",
+          "max": "2021-08-14T16:18",
+          "min": "2019-08-14T16:18"
+        },
+        "thumbnail.2": {
+          "type": "url",
+          "url": "https://d2q275vdzul5bt.cloudfront.net/vassets/cfac4ec522dc6c13297b2df81d288b3b96d96e97/socialThumb.jpg",
+          "file": null
+        },
+        "title.2": "標題",
+        "text.2": "8月17日（一）預約時間",
+        "action.2.0": {
+          "type": "message",
+          "label": "10:00",
+          "text": "預約8月17日（一）10:00",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.2.1": {
+          "type": "message",
+          "label": "14:00",
+          "text": "預約8月17日（一）14:00",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.2.2": {
+          "type": "message",
+          "label": "19:00",
+          "text": "預約8月17日（一）19:00",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "thumbnail.3": {
+          "type": "url",
+          "url": "https://image.shutterstock.com/image-vector/word-tuesday-colorful-day-week-260nw-1285201639.jpg",
+          "file": null
+        },
+        "title.3": "標題",
+        "text.3": "8月18日（二）預約時間",
+        "action.3.0": {
+          "type": "message",
+          "label": "10:00",
+          "text": "預約8月18日（二）10:00",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.3.1": {
+          "type": "message",
+          "label": "14:00",
+          "text": "預約8月18日（二）14:00",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.3.2": {
+          "type": "message",
+          "label": "19:00",
+          "text": "預約8月18日（二）19:00",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "thumbnail.4": {
+          "type": "url",
+          "url": "https://www.thefactsite.com/wp-content/uploads/2017/07/wednesday-facts.jpg",
+          "file": null
+        },
+        "title.4": "標題",
+        "text.4": "8月19日（三）預約時間",
+        "action.4.0": {
+          "type": "message",
+          "label": "10:00",
+          "text": "預約8月19日（三）10:00",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.4.1": {
+          "type": "message",
+          "label": "14:00",
+          "text": "預約8月19日（三）14:00",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.4.2": {
+          "type": "message",
+          "label": "19:00",
+          "text": "預約8月19日（三）19:00",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "thumbnail.5": {
+          "type": "url",
+          "url": "https://img3.stockfresh.com/files/e/enterlinedesign/m/88/7684297_stock-photo-thursday-colorful-watercolor-and-ink-word-art.jpg",
+          "file": null
+        },
+        "title.5": "標題",
+        "text.5": "8月20日（四）預約時間",
+        "action.5.0": {
+          "type": "message",
+          "label": "10:00",
+          "text": "預約8月20日（四）10:00",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.5.1": {
+          "type": "message",
+          "label": "14:00",
+          "text": "預約8月20日（四）14:00",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.5.2": {
+          "type": "message",
+          "label": "19:00",
+          "text": "預約8月20日（四）19:00",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "thumbnail.6": {
+          "type": "url",
+          "url": "https://www.brookesandco.net/wp-content/uploads/2018/03/Brookes-Co-Friday-Feeling.jpg",
+          "file": null
+        },
+        "title.6": "標題",
+        "text.6": "8月21日（五）預約時間",
+        "action.6.0": {
+          "type": "message",
+          "label": "10:00",
+          "text": "預約8月21日（五）10:00",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.6.1": {
+          "type": "message",
+          "label": "14:00",
+          "text": "預約8月21日（五）14:00",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.6.2": {
+          "type": "message",
+          "label": "19:00",
+          "text": "預約8月21日（五）19:00",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "thumbnail.7": {
+          "type": "url",
+          "url": "https://cdn1.vectorstock.com/i/1000x1000/58/45/mission-aborted-rubber-stamp-vector-12765845.jpg",
+          "file": null
+        },
+        "title.7": "標題",
+        "text.7": "暫不預約",
+        "action.7.0": {
+          "type": "message",
+          "label": "暫不預約",
+          "text": "暫不預約",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "action.7.1": {
+          "type": "message",
+          "label": "暫不預約",
+          "text": "暫不預約",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "action.7.2": {
+          "type": "message",
+          "label": "暫不預約",
+          "text": "暫不預約",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "thumbnail.8": {
+          "type": "url",
+          "file": null
+        },
+        "title.8": "標題",
+        "text.8": "文字",
+        "action.8.0": {
+          "type": "message",
+          "label": "動作 1",
+          "text": "動作 1",
+          "data": "資料 1"
+        },
+        "action.8.1": {
+          "type": "message",
+          "label": "動作 2",
+          "text": "動作 2",
+          "data": "資料 2"
+        },
+        "action.8.2": {
+          "type": "message",
+          "label": "動作 3",
+          "text": "動作 3",
+          "data": "資料 3"
+        },
+        "thumbnail.9": {
+          "type": "url",
+          "file": null
+        },
+        "title.9": "標題",
+        "text.9": "文字",
+        "action.9.0": {
+          "type": "message",
+          "label": "動作 1",
+          "text": "動作 1",
+          "data": "資料 1"
+        },
+        "action.9.1": {
+          "type": "message",
+          "label": "動作 2",
+          "text": "動作 2",
+          "data": "資料 2"
+        },
+        "action.9.2": {
+          "type": "message",
+          "label": "動作 3",
+          "text": "動作 3",
+          "data": "資料 3"
+        }
+      }
+    },
+    {
+      "id": "85265868-7718-40df-9dbf-b08e285e79a5",
+      "type": "confirm",
+      "name": "2.2.4.1 確認預約時段",
+      "params": {
+        "text": "您要預約 8月15日（六）14:00 嗎？",
+        "actionLeft": {
+          "type": "message",
+          "label": "是",
+          "text": "是",
+          "data": "資料 1"
+        },
+        "actionRight": {
+          "type": "message",
+          "label": "否",
+          "text": "否",
+          "data": "資料 2"
+        }
+      }
+    },
+    {
+      "id": "6f1d4a05-a67f-455c-b5a4-4f2bf6367b18",
+      "type": "text",
+      "name": "2.2.5 請輸入您的電話號碼",
+      "params": {
+        "text": "【林大頭】您好，請輸入您的電話號碼"
+      }
+    },
+    {
+      "id": "2b3fad6e-db8c-49af-9416-dde0951a7467",
+      "type": "confirm",
+      "name": "2.2.5.1 確認電話號碼",
+      "params": {
+        "text": "您的電話號碼為 0987654321 嗎？ ",
+        "actionLeft": {
+          "type": "message",
+          "label": "是",
+          "text": "是",
+          "data": "資料 1"
+        },
+        "actionRight": {
+          "type": "message",
+          "label": "否",
+          "text": "否",
+          "data": "資料 2"
+        }
+      }
+    },
+    {
+      "id": "d39f40ee-6eaf-4bc9-833a-ffbfd9e2be1d",
+      "type": "text",
+      "name": "2.2.6 預約完成",
+      "params": {
+        "text": "【林大頭】您好，以下是您預約資料：\n\n1. 時間： 8月15日（六）10:00\n2. 地址：地址：OO市OO區OO路OO號\n3. 電話：0987654321\n\n若有要調整預約時間或其它問題，可以在此客服機器人上留言，或打 0912345678 聯絡 OO 老師。"
+      }
+    },
+    {
+      "id": "f5c69b36-e8cd-46b8-adea-409314ecc351",
+      "type": "buttons",
+      "name": "2.3 你知道對方的命盤編號嗎？",
+      "params": {
+        "imageAspectRatio": "none",
+        "imageSize": "none",
+        "thumbnailImageUrl": {
+          "type": "url",
+          "url": "https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_03_small.png",
+          "file": null
+        },
+        "title": "OO 老師 幫你找貴人",
+        "text": "你知道對方的命盤編號嗎？",
+        "actionCount": 3,
+        "actions.0": {
+          "type": "message",
+          "label": "我知道，我要輸入他的編號",
+          "text": "我知道，我要輸入他的編號",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "actions.1": {
+          "type": "message",
+          "label": "不知道，請告訴我怎麼做",
+          "text": "不知道，請告訴我怎麼做",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "actions.2": {
+          "type": "message",
+          "label": "回主選單，下次再說",
+          "text": "回主選單，下次再說",
+          "data": "資料 3",
+          "mode": "datetime"
+        },
+        "actions.3": {
+          "type": "message",
+          "label": "動作 4",
+          "text": "動作 4",
+          "data": "資料 4"
+        }
+      }
+    },
+    {
+      "id": "ffad8085-cfdf-44d4-a9de-b9c76e04aece",
+      "type": "text",
+      "name": "2.3.1 說明找命盤編號的方法",
+      "params": {
+        "text": "請對方加入以下的 OO 老師好運勢官方帳號： https://lin.ee/K4B2mHF\n\n在輸入姓名、生日以後，在主選單的「重新輸入生日及其它功能」裡，按下查詢命盤編號，系統會顯示對方的命盤編號。"
+      }
+    },
+    {
+      "id": "4c79e2f3-3941-4d27-8c0d-f72fc8b060ec",
+      "type": "text",
+      "name": "2.3.2 請輸入對方的命盤編號",
+      "params": {
+        "text": "請輸入對方的命盤編號"
+      }
+    },
+    {
+      "id": "e523d639-fb08-4235-aeae-c99fe2a0de69",
+      "type": "text",
+      "name": "2.3.3 對方的貴人指數",
+      "params": {
+        "text": "【王小明】對【林大頭】的貴人指數分析如下：\n\n財運貴人指數：★★★★☆\n事業貴人指數：★★★☆☆\n愛情貴人指數：★★☆☆☆\n\n結論：\n【王小明】對【林大頭】在財運上最有幫助。"
+      }
+    },
+    {
+      "id": "0c7167c7-d196-4a48-a3b7-9e40f6fc4aa4",
+      "type": "buttons",
+      "name": "2.3.4 要再查詢其它貴人嗎？",
+      "params": {
+        "imageAspectRatio": "none",
+        "imageSize": "none",
+        "thumbnailImageUrl": {
+          "type": "url",
+          "url": "https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_02_small.png",
+          "file": null
+        },
+        "title": "要再查詢其它貴人嗎？",
+        "text": "要再查詢其它貴人嗎？",
+        "actionCount": 2,
+        "actions.0": {
+          "type": "message",
+          "label": "要再查詢其它貴人",
+          "text": "要再查詢其它貴人",
+          "data": "資料 1",
+          "mode": "datetime"
+        },
+        "actions.1": {
+          "type": "message",
+          "label": "回主選單",
+          "text": "回主選單",
+          "data": "資料 2",
+          "mode": "datetime"
+        },
+        "actions.2": {
+          "type": "message",
+          "label": "動作 3",
+          "text": "動作 3",
+          "data": "資料 3"
+        },
+        "actions.3": {
+          "type": "message",
+          "label": "動作 4",
+          "text": "動作 4",
+          "data": "資料 4"
+        }
+      }
+    }
+  ],
+  "userMessages": {
+    "f7392985-8a5d-4111-8240-e53b41f28aaa": {
+      "id": "f7392985-8a5d-4111-8240-e53b41f28aaa",
+      "type": "text",
+      "params": {
+        "text": "查詢老師時間"
+      }
+    },
+    "8fef02a4-cd35-4a8e-a5cb-b5c38eb0bd3e": {
+      "id": "8fef02a4-cd35-4a8e-a5cb-b5c38eb0bd3e",
+      "type": "text",
+      "params": {
+        "text": "現在LINE預約"
+      }
+    },
+    "e6a0b2a3-40a0-4a6d-bd65-e3d96e8c37fc": {
+      "id": "e6a0b2a3-40a0-4a6d-bd65-e3d96e8c37fc",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "d560e6ca-7802-47da-9457-6ac50132c5e3": {
+      "id": "d560e6ca-7802-47da-9457-6ac50132c5e3",
+      "type": "text",
+      "params": {
+        "text": "0987654321"
+      }
+    },
+    "2649b0e0-d0ec-45f3-a1e4-b68a192205e1": {
+      "id": "2649b0e0-d0ec-45f3-a1e4-b68a192205e1",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "0f37488b-c91c-491a-a96f-2ff4f580c0b8": {
+      "id": "0f37488b-c91c-491a-a96f-2ff4f580c0b8",
+      "type": "text",
+      "params": {
+        "text": "今日運勢"
+      }
+    },
+    "e309c7b4-b80f-41c4-8b90-6c65cfeec45b": {
+      "id": "e309c7b4-b80f-41c4-8b90-6c65cfeec45b",
+      "type": "text",
+      "params": {
+        "text": "財運運勢"
+      }
+    },
+    "79d12e16-2f30-467e-b30d-e7c468cb9421": {
+      "id": "79d12e16-2f30-467e-b30d-e7c468cb9421",
+      "type": "text",
+      "params": {
+        "text": "愛情運勢"
+      }
+    },
+    "aebe187c-7266-464c-84ed-2e4399980a14": {
+      "id": "aebe187c-7266-464c-84ed-2e4399980a14",
+      "type": "text",
+      "params": {
+        "text": "事業運勢"
+      }
+    },
+    "34de2ff2-c132-4fe7-b0c4-76b4cb2c2618": {
+      "id": "34de2ff2-c132-4fe7-b0c4-76b4cb2c2618",
+      "type": "text",
+      "params": {
+        "text": "回主選單"
+      }
+    },
+    "87ca511e-78ed-4c88-8f8e-879ebe0c4351": {
+      "id": "87ca511e-78ed-4c88-8f8e-879ebe0c4351",
+      "type": "text",
+      "params": {
+        "text": "林大頭"
+      }
+    },
+    "1e7decc1-a633-4f3c-9880-7a8489be525b": {
+      "id": "1e7decc1-a633-4f3c-9880-7a8489be525b",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "19bcb2a1-c081-4c8f-ae0c-0f5a2a46df36": {
+      "id": "19bcb2a1-c081-4c8f-ae0c-0f5a2a46df36",
+      "type": "text",
+      "params": {
+        "text": "19790830"
+      }
+    },
+    "386d9e88-e5cf-4aed-b361-ba22d15b2677": {
+      "id": "386d9e88-e5cf-4aed-b361-ba22d15b2677",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "2a7fb7f8-6303-4ffd-a91b-15e489129881": {
+      "id": "2a7fb7f8-6303-4ffd-a91b-15e489129881",
+      "type": "text",
+      "params": {
+        "text": "23:30"
+      }
+    },
+    "2f4a4251-78e0-4073-a32e-ddc8d69b1a18": {
+      "id": "2f4a4251-78e0-4073-a32e-ddc8d69b1a18",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "3cfe2b47-9f6f-4c7d-af10-25e6d61266c0": {
+      "id": "3cfe2b47-9f6f-4c7d-af10-25e6d61266c0",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "76e64255-00fc-47f1-baf1-077c13a7f4c8": {
+      "id": "76e64255-00fc-47f1-baf1-077c13a7f4c8",
+      "type": "text",
+      "params": {
+        "text": "稍後再預約"
+      }
+    },
+    "09729231-4f89-4cc6-8a68-1728e259d13b": {
+      "id": "09729231-4f89-4cc6-8a68-1728e259d13b",
+      "type": "text",
+      "params": {
+        "text": "找出誰是我的貴人"
+      }
+    },
+    "c9578b59-af5a-4366-9a18-f08b1520b769": {
+      "id": "c9578b59-af5a-4366-9a18-f08b1520b769",
+      "type": "text",
+      "params": {
+        "text": "不知道，請告訴我怎麼做"
+      }
+    },
+    "9af19e32-a527-4e3e-b5a1-558b729d485b": {
+      "id": "9af19e32-a527-4e3e-b5a1-558b729d485b",
+      "type": "text",
+      "params": {
+        "text": "我知道，我要輸入他的編號"
+      }
+    },
+    "9e466a7c-cd74-45b0-a404-899c08fad69b": {
+      "id": "9e466a7c-cd74-45b0-a404-899c08fad69b",
+      "type": "text",
+      "params": {
+        "text": "1223"
+      }
+    },
+    "b818b3c6-e9c2-44f0-9819-5f465d97f6d8": {
+      "id": "b818b3c6-e9c2-44f0-9819-5f465d97f6d8",
+      "type": "text",
+      "params": {
+        "text": "回主選單"
+      }
+    },
+    "80f4b3cc-f63e-43b2-96f5-e17260585811": {
+      "id": "80f4b3cc-f63e-43b2-96f5-e17260585811",
+      "type": "text",
+      "params": {
+        "text": "我要提升今明二日運勢"
+      }
+    },
+    "cb49fc9d-a3f4-43a4-a2f5-dc6379e28391": {
+      "id": "cb49fc9d-a3f4-43a4-a2f5-dc6379e28391",
+      "type": "text",
+      "params": {
+        "text": "提升今明二日財運運勢"
+      }
+    },
+    "2c15bebc-bf7e-40ac-b416-eef320282383": {
+      "id": "2c15bebc-bf7e-40ac-b416-eef320282383",
+      "type": "text",
+      "params": {
+        "text": "回主選單"
+      }
+    },
+    "e23692f0-bddc-4593-85ac-b5c782367ab6": {
+      "id": "e23692f0-bddc-4593-85ac-b5c782367ab6",
+      "type": "text",
+      "params": {
+        "text": "預約8月15日（六）14:00"
+      }
+    },
+    "8f194e2e-0e78-4a01-b5d8-ed5d8cfafbf3": {
+      "id": "8f194e2e-0e78-4a01-b5d8-ed5d8cfafbf3",
+      "type": "text",
+      "params": {
+        "text": "我想查詢老師諮詢時間"
+      }
+    },
+    "f433e4c2-e9c8-4fc5-a1fa-1fc4917fcec5": {
+      "id": "f433e4c2-e9c8-4fc5-a1fa-1fc4917fcec5",
+      "type": "text",
+      "params": {
+        "text": "線上預約"
+      }
+    },
+    "5718efd6-a4d1-41d3-a9cd-9a3691c57ecf": {
+      "id": "5718efd6-a4d1-41d3-a9cd-9a3691c57ecf",
+      "type": "text",
+      "params": {
+        "text": "預約8月15日（六）14:00"
+      }
+    },
+    "46753afb-641e-4035-8061-ed864049299a": {
+      "id": "46753afb-641e-4035-8061-ed864049299a",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "332d3b22-4151-4b2b-8e41-f9ee2d20ac0c": {
+      "id": "332d3b22-4151-4b2b-8e41-f9ee2d20ac0c",
+      "type": "text",
+      "params": {
+        "text": "0987654321"
+      }
+    },
+    "f34d2d0f-ec59-4d9e-99f3-618932adf165": {
+      "id": "f34d2d0f-ec59-4d9e-99f3-618932adf165",
+      "type": "text",
+      "params": {
+        "text": "是"
+      }
+    },
+    "3b9f7796-1418-443c-a65a-a18889ee80ff": {
+      "id": "3b9f7796-1418-443c-a65a-a18889ee80ff",
+      "type": "text",
+      "params": {
+        "text": "gf"
+      }
+    }
+  },
+  "chats": [
+    {
+      "name": "第一次見面，輸入生日",
+      "displayNumber": 9,
+      "messages": [
+        {
+          "sender": "BOT",
+          "time": 1597633773498,
+          "messageId": "edc1edc3-fb2c-4872-a876-5086e498f39e"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633775414,
+          "messageId": "77c9f7c6-05a7-4d0a-8955-f3ef4804e57d"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633777632,
+          "messageId": "acc6d541-22ce-4de6-8691-ac5e9f00b78c"
+        },
+        {
+          "sender": "USER",
+          "time": 1597633787423,
+          "messageId": "87ca511e-78ed-4c88-8f8e-879ebe0c4351"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633792791,
+          "messageId": "49b498e1-844a-4d64-925b-5385f0bccdf9"
+        },
+        {
+          "sender": "USER",
+          "time": 1597633795246,
+          "messageId": "1e7decc1-a633-4f3c-9880-7a8489be525b"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633798903,
+          "messageId": "065d8e2c-02f2-476c-b1f3-c5144ead7526"
+        },
+        {
+          "sender": "USER",
+          "time": 1597633809684,
+          "messageId": "19bcb2a1-c081-4c8f-ae0c-0f5a2a46df36"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633812394,
+          "messageId": "21039508-9b4b-4616-bb2d-a36c9800e093"
+        },
+        {
+          "sender": "USER",
+          "time": 1597633814231,
+          "messageId": "386d9e88-e5cf-4aed-b361-ba22d15b2677"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633816594,
+          "messageId": "65f400d4-278c-44f7-8df0-8803d1aa590c"
+        },
+        {
+          "sender": "USER",
+          "time": 1597633823112,
+          "messageId": "2a7fb7f8-6303-4ffd-a91b-15e489129881"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633825928,
+          "messageId": "4e707cde-1316-4c28-bed1-5bbaec9b0aa4"
+        },
+        {
+          "sender": "USER",
+          "time": 1597633827449,
+          "messageId": "2f4a4251-78e0-4073-a32e-ddc8d69b1a18"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633829225,
+          "messageId": "774fbc9f-9eb1-4180-ac04-da8de7162a2d"
+        },
+        {
+          "sender": "USER",
+          "time": 1597633833137,
+          "messageId": "3cfe2b47-9f6f-4c7d-af10-25e6d61266c0"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597633836578,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "BOT",
+          "time": 1601958573181,
+          "messageId": "edc1edc3-fb2c-4872-a876-5086e498f39e"
+        },
+        {
+          "sender": "BOT",
+          "time": 1601958575554,
+          "messageId": "77c9f7c6-05a7-4d0a-8955-f3ef4804e57d"
+        }
+      ],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    },
+    {
+      "name": "看運勢",
+      "displayNumber": 8,
+      "messages": [
+        {
+          "sender": "BOT",
+          "time": 1597421844870,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "USER",
+          "time": 1597421849471,
+          "messageId": "0f37488b-c91c-491a-a96f-2ff4f580c0b8"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421859352,
+          "messageId": "4a000018-265c-4573-8288-d4cfb9af6f97"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421861747,
+          "messageId": "2db31f65-3af6-47cb-819f-59edc04de219"
+        },
+        {
+          "sender": "USER",
+          "time": 1597421868575,
+          "messageId": "e309c7b4-b80f-41c4-8b90-6c65cfeec45b"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421871217,
+          "messageId": "6acfd114-1c75-4f90-bac3-1abfcb29f06e"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421873580,
+          "messageId": "2db31f65-3af6-47cb-819f-59edc04de219"
+        },
+        {
+          "sender": "USER",
+          "time": 1597421877171,
+          "messageId": "79d12e16-2f30-467e-b30d-e7c468cb9421"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421879355,
+          "messageId": "4036e003-811d-4639-9d80-4b32abc55e8e"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421882144,
+          "messageId": "2db31f65-3af6-47cb-819f-59edc04de219"
+        },
+        {
+          "sender": "USER",
+          "time": 1597421884437,
+          "messageId": "aebe187c-7266-464c-84ed-2e4399980a14"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421886990,
+          "messageId": "2ca562cf-9c13-42ca-a8ec-a7d9555e47f3"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421890597,
+          "messageId": "2db31f65-3af6-47cb-819f-59edc04de219"
+        },
+        {
+          "sender": "USER",
+          "time": 1597421893436,
+          "messageId": "34de2ff2-c132-4fe7-b0c4-76b4cb2c2618"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597421899859,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600228903324,
+          "messageId": "acc6d541-22ce-4de6-8691-ac5e9f00b78c"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600228910516,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600228912631,
+          "messageId": "4a000018-265c-4573-8288-d4cfb9af6f97"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600228914692,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        }
+      ],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    },
+    {
+      "name": "LINE 預約流程",
+      "displayNumber": 5,
+      "messages": [
+        {
+          "sender": "BOT",
+          "time": 1597395295022,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "USER",
+          "time": 1597395299401,
+          "messageId": "f7392985-8a5d-4111-8240-e53b41f28aaa"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597395307374,
+          "messageId": "2b8facd0-c655-4380-b702-2911f117e66f"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597395312375,
+          "messageId": "f56937c4-4cda-440a-80a4-e6a172d2c35a"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597395321671,
+          "messageId": "e4e45b70-41e0-4422-ad16-e531b0c2ff3e"
+        },
+        {
+          "sender": "USER",
+          "time": 1597395324501,
+          "messageId": "8fef02a4-cd35-4a8e-a5cb-b5c38eb0bd3e"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597395327360,
+          "messageId": "ae8d2e8d-2099-4a9a-ae96-ab3a7335f703"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597396909565,
+          "messageId": "85265868-7718-40df-9dbf-b08e285e79a5"
+        },
+        {
+          "sender": "USER",
+          "time": 1597397397361,
+          "messageId": "e6a0b2a3-40a0-4a6d-bd65-e3d96e8c37fc"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597397406047,
+          "messageId": "6f1d4a05-a67f-455c-b5a4-4f2bf6367b18"
+        },
+        {
+          "sender": "USER",
+          "time": 1597397415246,
+          "messageId": "d560e6ca-7802-47da-9457-6ac50132c5e3"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597397420522,
+          "messageId": "2b3fad6e-db8c-49af-9416-dde0951a7467"
+        },
+        {
+          "sender": "USER",
+          "time": 1597397422667,
+          "messageId": "2649b0e0-d0ec-45f3-a1e4-b68a192205e1"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597397425725,
+          "messageId": "d39f40ee-6eaf-4bc9-833a-ffbfd9e2be1d"
+        },
+        {
+          "sender": "BOT",
+          "time": 1597397472649,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "USER",
+          "time": 1598011150729,
+          "messageId": "76e64255-00fc-47f1-baf1-077c13a7f4c8"
+        },
+        {
+          "sender": "USER",
+          "time": 1600230442234,
+          "messageId": "e23692f0-bddc-4593-85ac-b5c782367ab6"
+        }
+      ],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    },
+    {
+      "name": "找貴人",
+      "displayNumber": 10,
+      "messages": [],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    },
+    {
+      "name": null,
+      "displayNumber": 11,
+      "messages": [],
+      "selectedRichMenuId": "359ccc5f-e6ff-41b7-8e32-beef04e56941",
+      "webAppList": []
+    },
+    {
+      "name": "找貴人",
+      "displayNumber": 12,
+      "messages": [
+        {
+          "sender": "BOT",
+          "time": 1599026762123,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "USER",
+          "time": 1599026769059,
+          "messageId": "09729231-4f89-4cc6-8a68-1728e259d13b"
+        },
+        {
+          "sender": "BOT",
+          "time": 1599026780366,
+          "messageId": "f5c69b36-e8cd-46b8-adea-409314ecc351"
+        },
+        {
+          "sender": "USER",
+          "time": 1599026784792,
+          "messageId": "c9578b59-af5a-4366-9a18-f08b1520b769"
+        },
+        {
+          "sender": "BOT",
+          "time": 1599026791165,
+          "messageId": "ffad8085-cfdf-44d4-a9de-b9c76e04aece"
+        },
+        {
+          "sender": "BOT",
+          "time": 1599026824231,
+          "messageId": "f5c69b36-e8cd-46b8-adea-409314ecc351"
+        },
+        {
+          "sender": "USER",
+          "time": 1599026874188,
+          "messageId": "9af19e32-a527-4e3e-b5a1-558b729d485b"
+        },
+        {
+          "sender": "BOT",
+          "time": 1599026882281,
+          "messageId": "4c79e2f3-3941-4d27-8c0d-f72fc8b060ec"
+        },
+        {
+          "sender": "USER",
+          "time": 1599026898837,
+          "messageId": "9e466a7c-cd74-45b0-a404-899c08fad69b"
+        },
+        {
+          "sender": "BOT",
+          "time": 1599026931262,
+          "messageId": "e523d639-fb08-4235-aeae-c99fe2a0de69"
+        },
+        {
+          "sender": "BOT",
+          "time": 1599026937113,
+          "messageId": "0c7167c7-d196-4a48-a3b7-9e40f6fc4aa4"
+        },
+        {
+          "sender": "USER",
+          "time": 1599026947011,
+          "messageId": "b818b3c6-e9c2-44f0-9819-5f465d97f6d8"
+        },
+        {
+          "sender": "BOT",
+          "time": 1599026953338,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        }
+      ],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    },
+    {
+      "name": "看運勢2",
+      "displayNumber": 13,
+      "messages": [
+        {
+          "sender": "BOT",
+          "time": 1600228992784,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "USER",
+          "time": 1600229006699,
+          "messageId": "80f4b3cc-f63e-43b2-96f5-e17260585811"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600229142752,
+          "messageId": "2db31f65-3af6-47cb-819f-59edc04de219"
+        },
+        {
+          "sender": "USER",
+          "time": 1600229941807,
+          "messageId": "cb49fc9d-a3f4-43a4-a2f5-dc6379e28391"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600229948637,
+          "messageId": "6acfd114-1c75-4f90-bac3-1abfcb29f06e"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600229968709,
+          "messageId": "2db31f65-3af6-47cb-819f-59edc04de219"
+        },
+        {
+          "sender": "USER",
+          "time": 1600229979750,
+          "messageId": "2c15bebc-bf7e-40ac-b416-eef320282383"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600229985317,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        }
+      ],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    },
+    {
+      "name": null,
+      "displayNumber": 14,
+      "messages": [
+        {
+          "sender": "BOT",
+          "time": 1600230832903,
+          "messageId": "2f5d6d3e-b1c6-470f-b132-8413d74cf360"
+        },
+        {
+          "sender": "USER",
+          "time": 1600230835200,
+          "messageId": "8f194e2e-0e78-4a01-b5d8-ed5d8cfafbf3"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230842716,
+          "messageId": "1a64ad58-7cda-4d7a-bcd6-552d4fb745b8"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230849253,
+          "messageId": "f56937c4-4cda-440a-80a4-e6a172d2c35a"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230853556,
+          "messageId": "e4e45b70-41e0-4422-ad16-e531b0c2ff3e"
+        },
+        {
+          "sender": "USER",
+          "time": 1600230889804,
+          "messageId": "f433e4c2-e9c8-4fc5-a1fa-1fc4917fcec5"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230902447,
+          "messageId": "ae8d2e8d-2099-4a9a-ae96-ab3a7335f703"
+        },
+        {
+          "sender": "USER",
+          "time": 1600230907931,
+          "messageId": "5718efd6-a4d1-41d3-a9cd-9a3691c57ecf"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230909716,
+          "messageId": "85265868-7718-40df-9dbf-b08e285e79a5"
+        },
+        {
+          "sender": "USER",
+          "time": 1600230915567,
+          "messageId": "46753afb-641e-4035-8061-ed864049299a"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230922476,
+          "messageId": "6f1d4a05-a67f-455c-b5a4-4f2bf6367b18"
+        },
+        {
+          "sender": "USER",
+          "time": 1600230931945,
+          "messageId": "332d3b22-4151-4b2b-8e41-f9ee2d20ac0c"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230934469,
+          "messageId": "2b3fad6e-db8c-49af-9416-dde0951a7467"
+        },
+        {
+          "sender": "USER",
+          "time": 1600230935876,
+          "messageId": "f34d2d0f-ec59-4d9e-99f3-618932adf165"
+        },
+        {
+          "sender": "BOT",
+          "time": 1600230937003,
+          "messageId": "d39f40ee-6eaf-4bc9-833a-ffbfd9e2be1d"
+        }
+      ],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    },
+    {
+      "name": null,
+      "displayNumber": 15,
+      "messages": [
+        {
+          "sender": "BOT",
+          "time": 1601958587056,
+          "messageId": "77c9f7c6-05a7-4d0a-8955-f3ef4804e57d"
+        },
+        {
+          "sender": "BOT",
+          "time": 1601958588247,
+          "messageId": "acc6d541-22ce-4de6-8691-ac5e9f00b78c"
+        },
+        {
+          "sender": "USER",
+          "time": 1601958592365,
+          "messageId": "3b9f7796-1418-443c-a65a-a18889ee80ff"
+        }
+      ],
+      "selectedRichMenuId": null,
+      "webAppList": []
+    }
+  ],
+  "richMenus": [
+    {
+      "id": "359ccc5f-e6ff-41b7-8e32-beef04e56941",
+      "type": "richmenu",
+      "name": "圖文選單 1",
+      "params": {
+        "_name": "圖文選單 1",
+        "defaultNameNumber": 1,
+        "image": {
+          "cloned": false,
+          "cloneId": null,
+          "id": "e2829fd8-c21a-4c5a-a259-29696b8036aa",
+          "name": "未命名",
+          "type": "png",
+          "hash": "44f4a9c3f171dc570f514d61e335785009d46d08"
+        },
+        "width": 2500,
+        "height": 843,
+        "selected": true,
+        "chatBarText": "查看更多資訊",
+        "actionCount": 1,
+        "area.0": {
+          "quadrant": 0,
+          "x": 635,
+          "y": 258,
+          "width": 1190,
+          "height": 275,
+          "type": "uri",
+          "data": "資料 1",
+          "text": "範圍 1",
+          "uri": "http://demos.net-factor.com/appointment-hour-booking/",
+          "mode": "datetime"
+        },
+        "area.1": {
+          "quadrant": 0,
+          "x": 621,
+          "y": 175,
+          "width": 621,
+          "height": 358,
+          "type": "message",
+          "data": "資料 2",
+          "text": "範圍 2"
+        },
+        "area.2": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 3",
+          "text": "範圍 3"
+        },
+        "area.3": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 4",
+          "text": "範圍 4"
+        },
+        "area.4": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 5",
+          "text": "範圍 5"
+        },
+        "area.5": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 6",
+          "text": "範圍 6"
+        },
+        "area.6": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 7",
+          "text": "範圍 7"
+        },
+        "area.7": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 8",
+          "text": "範圍 8"
+        },
+        "area.8": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 9",
+          "text": "範圍 9"
+        },
+        "area.9": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 10",
+          "text": "範圍 10"
+        },
+        "area.10": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 11",
+          "text": "範圍 11"
+        },
+        "area.11": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 12",
+          "text": "範圍 12"
+        },
+        "area.12": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 13",
+          "text": "範圍 13"
+        },
+        "area.13": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 14",
+          "text": "範圍 14"
+        },
+        "area.14": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 15",
+          "text": "範圍 15"
+        },
+        "area.15": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 16",
+          "text": "範圍 16"
+        },
+        "area.16": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 17",
+          "text": "範圍 17"
+        },
+        "area.17": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 18",
+          "text": "範圍 18"
+        },
+        "area.18": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 19",
+          "text": "範圍 19"
+        },
+        "area.19": {
+          "quadrant": 0,
+          "type": "message",
+          "data": "資料 20",
+          "text": "範圍 20"
+        }
+      }
+    }
+  ],
+  "webApps": [],
+  "resources": [
+    {
+      "cloned": false,
+      "cloneId": null,
+      "id": "e2829fd8-c21a-4c5a-a259-29696b8036aa",
+      "name": "未命名",
+      "type": "png",
+      "hash": "44f4a9c3f171dc570f514d61e335785009d46d08"
+    }
+  ],
+  "bubbleFlexes": [
+    {
+      "id": "7749dabe-b09a-4308-aa87-4ad122e9424e",
+      "type": "bubbleFlex",
+      "name": "對話框訊息 1",
+      "params": {
+        "header": {
+          "type": "box",
+          "disable": false,
+          "componentProps": [
+            "horizontal",
+            "",
+            "",
+            "",
+            {
+              "type": "uri"
+            },
+            "none",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            null,
+            null,
+            ""
+          ],
+          "contents": [
+            {
+              "type": "text",
+              "disable": false,
+              "componentProps": [
+                "NEWS DIGEST",
+                "",
+                "sm",
+                "#AAAAAA",
+                "bold",
+                "none",
+                "none",
+                "",
+                "none",
+                {
+                  "type": "uri"
+                },
+                "none",
+                "none",
+                "none",
+                "",
+                "",
+                "",
+                ""
+              ],
+              "contents": []
+            }
+          ]
+        },
+        "hero": {
+          "type": "image",
+          "disable": false,
+          "componentProps": [
+            "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_4_news.png",
+            "",
+            "full",
+            "none",
+            "none",
+            "20:13",
+            "cover",
+            "",
+            "",
+            {
+              "type": "uri",
+              "label": "Action",
+              "uri": "https://linecorp.com/"
+            },
+            "none",
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        "body": {
+          "type": "box",
+          "disable": false,
+          "componentProps": [
+            "horizontal",
+            "",
+            "md",
+            "",
+            {
+              "type": "uri"
+            },
+            "none",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            null,
+            null,
+            ""
+          ],
+          "contents": [
+            {
+              "type": "box",
+              "disable": false,
+              "componentProps": [
+                "vertical",
+                1,
+                "",
+                "",
+                {
+                  "type": "uri"
+                },
+                "none",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                null,
+                null,
+                ""
+              ],
+              "contents": [
+                {
+                  "type": "image",
+                  "disable": false,
+                  "componentProps": [
+                    "https://scdn.line-apps.com/n/channel_devcenter/img/fx/02_1_news_thumbnail_1.png",
+                    null,
+                    "sm",
+                    "none",
+                    "bottom",
+                    "4:3",
+                    "cover",
+                    "",
+                    null,
+                    {
+                      "type": "uri"
+                    },
+                    "none",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ]
+                },
+                {
+                  "type": "image",
+                  "disable": false,
+                  "componentProps": [
+                    "https://scdn.line-apps.com/n/channel_devcenter/img/fx/02_1_news_thumbnail_2.png",
+                    null,
+                    "sm",
+                    "none",
+                    "none",
+                    "4:3",
+                    "cover",
+                    "md",
+                    null,
+                    {
+                      "type": "uri"
+                    },
+                    "none",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "disable": false,
+              "componentProps": [
+                "vertical",
+                2,
+                "",
+                "",
+                {
+                  "type": "uri"
+                },
+                "none",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                null,
+                null,
+                ""
+              ],
+              "contents": [
+                {
+                  "type": "text",
+                  "disable": false,
+                  "componentProps": [
+                    "7 Things to Know for Today",
+                    1,
+                    "xs",
+                    "",
+                    "none",
+                    "",
+                    "top",
+                    "",
+                    "none",
+                    {
+                      "type": "uri"
+                    },
+                    "none",
+                    "none",
+                    "none",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "contents": []
+                },
+                {
+                  "type": "separator",
+                  "componentProps": [
+                    "",
+                    null
+                  ]
+                },
+                {
+                  "type": "text",
+                  "disable": false,
+                  "componentProps": [
+                    "Hay fever goes wild",
+                    2,
+                    "xs",
+                    "",
+                    "none",
+                    "",
+                    "center",
+                    "",
+                    "none",
+                    {
+                      "type": "uri"
+                    },
+                    "none",
+                    "none",
+                    "none",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "contents": []
+                },
+                {
+                  "type": "separator",
+                  "componentProps": [
+                    "",
+                    null
+                  ]
+                },
+                {
+                  "type": "text",
+                  "disable": false,
+                  "componentProps": [
+                    "LINE Pay Begins Barcode Payment Service",
+                    2,
+                    "xs",
+                    "",
+                    "none",
+                    "",
+                    "center",
+                    "",
+                    "none",
+                    {
+                      "type": "uri"
+                    },
+                    "none",
+                    "none",
+                    "none",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "contents": []
+                },
+                {
+                  "type": "separator",
+                  "componentProps": [
+                    "",
+                    null
+                  ]
+                },
+                {
+                  "type": "text",
+                  "disable": false,
+                  "componentProps": [
+                    "LINE Adds LINE Wallet",
+                    1,
+                    "xs",
+                    "",
+                    "none",
+                    "",
+                    "bottom",
+                    "",
+                    "none",
+                    {
+                      "type": "uri"
+                    },
+                    "none",
+                    "none",
+                    "none",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ],
+                  "contents": []
+                }
+              ]
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "disable": false,
+          "componentProps": [
+            "horizontal",
+            "",
+            "",
+            "",
+            {
+              "type": "uri"
+            },
+            "none",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            null,
+            null,
+            ""
+          ],
+          "contents": [
+            {
+              "type": "button",
+              "componentProps": [
+                {
+                  "type": "uri",
+                  "label": "More",
+                  "uri": "https://linecorp.com"
+                },
+                "",
+                "",
+                "none",
+                "none",
+                "",
+                "none",
+                "none",
+                "",
+                "",
+                "",
+                ""
+              ]
+            }
+          ]
+        },
+        "bubbleSize": "none",
+        "action": {
+          "type": "uri"
+        },
+        "defaultNameNumber": 1,
+        "separator.0": "none",
+        "separator.1": "none",
+        "separator.2": "none",
+        "separator.3": "none"
+      }
+    }
+  ],
+  "carouselFlexes": [],
+  "releaseVersion": "1.3.4"
+}
