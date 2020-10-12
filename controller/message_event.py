@@ -21,6 +21,7 @@ def handle(event, line_bot_api):
 
     app.logger.info("User [" + user_id + "] has send message: " + event.message.text)
     user_status = r.get(channel_id+user_id + ':status')
+    user_action = r.get(channel_id+user_id + ':action')
 
     if event.message.text == 'status':
         line_bot_api.reply_message(
@@ -50,14 +51,41 @@ def handle(event, line_bot_api):
             r.set(channel_id+user_id + ':status', 'confirm_birth_time')
 
         # services
-        if user_status == 'input_fate_num':
-            # TODO: query line user by fate number
+        if user_action == 'input_fate_num':
+            # TODO: 這邊要加一段，用 fate number (命盤編號) 來 query 使用者資料的 SQL
+            app.logger.info('Fate num:' + event.message.text)
             fate_num_result(event, line_bot_api, user_id, channel_id)
-            r.set(channel_id+user_id + ':status', 'contacted')
+            r.delete(channel_id+user_id + ':action')
+        if user_action == 'input_phone':
+            app.logger.info('Phone num:' + event.message.text)
+            confirm_phone(event, line_bot_api)
+
+
+def confirm_phone(event, line_bot_api):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TemplateSendMessage(
+            alt_text = '請確認電話號碼',
+            template = ConfirmTemplate(
+                text = '您的電話號碼是 ' + event.message.text + ' 嗎？',
+                actions = [
+                    PostbackAction(
+                        label = '是',
+                        display_text = '是',
+                        data = 'action=confirm_phone&reply=yes&phone=' + event.message.text
+                    ),
+                    PostbackAction(
+                        label = '否',
+                        display_text = '否',
+                        data = 'action=confirm_phone&reply=no'
+                    )
+                ]
+            )
+        )
+    )
 
 
 def fate_num_result(event, line_bot_api, user_id, channel_id):
-    app.logger.info('Fate num:' + event.message.text)
     user_name = r.get(channel_id+user_id + ':name')
     text = '[王小明] 對 [' + user_name + '] 的貴人指數分析如下：\n\n'\
                                      '財運貴人指數：★★★★☆\n'\
