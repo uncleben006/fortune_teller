@@ -68,7 +68,7 @@ def callback(channel_id):
     body = request.get_data(as_text = True)
     app.logger.info("Request body: " + body)
 
-    # bind user_id and channel_id
+    # set current channel_id
     user_id = json.loads(body)['events'][0]['source']['userId']
     r.set(user_id + ':channel_id', channel_id)
 

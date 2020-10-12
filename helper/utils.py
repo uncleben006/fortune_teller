@@ -20,10 +20,11 @@ def get_channel(channel_id):
 
 
 # Check user exist
-def is_user(user_id):
+def is_user(user_id, channel_id):
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     cursor = conn.cursor()
-    sql = "SELECT exists(SELECT 1 FROM line_user WHERE id = '%s' )" % user_id
+    sql = "SELECT exists(SELECT 1 FROM line_user WHERE id = '{user_id}' AND channel_id = '{channel_id}' )"
+    sql = sql.format(channel_id = channel_id, user_id = user_id)
     app.logger.info("Start check user: " + sql)
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -35,10 +36,17 @@ def is_user(user_id):
 
 
 # Get user info
-def get_user(user_id):
+def get_user(user_id, channel_id):
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     cursor = conn.cursor()
-    sql = "SELECT channel_id, id, name, gender, birth_day, birth_time, status FROM line_user WHERE id = '%s' " % user_id
+
+    sql = "SELECT channel_id, id, name, gender, birth_day, birth_time, status \
+    FROM line_user WHERE id = '{user_id}' \
+    AND channel_id = '{channel_id}'"
+
+    sql = sql.format(channel_id = channel_id,
+                     user_id = user_id)
+
     app.logger.info("Start query user: " + sql)
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -53,13 +61,16 @@ def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day,
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     cursor = conn.cursor()
 
+    # sql = "INSERT INTO line_user \
+    # VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}') \
+    # ON CONFLICT (id) DO UPDATE \
+    # SET channel_id = '{channel_id}', name = '{user_name}', \
+    # gender = '{user_gender}', birth_day = '{user_birth_day}', \
+    # birth_time = '{user_birth_time}', status = '{user_status}' \
+    # WHERE line_user.id = '{user_id}' "
+
     sql = "INSERT INTO line_user \
-    VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}') \
-    ON CONFLICT (id) DO UPDATE \
-    SET channel_id = '{channel_id}', name = '{user_name}', \
-    gender = '{user_gender}', birth_day = '{user_birth_day}', \
-    birth_time = '{user_birth_time}', status = '{user_status}' \
-    WHERE line_user.id = '{user_id}' "
+    VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}')"
 
     sql = sql.format(channel_id = channel_id,
                      user_id = user_id,

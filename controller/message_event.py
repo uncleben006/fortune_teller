@@ -17,8 +17,10 @@ r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
 def handle(event, line_bot_api):
     user_profile = line_bot_api.get_profile(event.source.user_id)
     user_id = user_profile.user_id
+    channel_id = r.get(user_id + ':channel_id')
+
     app.logger.info("User [" + user_id + "] has send message: " + event.message.text)
-    user_status = r.get(user_id + ':status')
+    user_status = r.get(channel_id+user_id + ':status')
 
     if event.message.text == 'status':
         line_bot_api.reply_message(
@@ -28,7 +30,7 @@ def handle(event, line_bot_api):
 
     if event.message.text == 'clear':
         # delete redis which key prefix is current user_id
-        for key in r.scan_iter(user_id + ":*"):
+        for key in r.scan_iter(channel_id + ":*"):
             r.delete(key)
         line_bot_api.reply_message(
             event.reply_token,
@@ -39,24 +41,24 @@ def handle(event, line_bot_api):
         # users data collecting
         if user_status == 'input_name':
             confirm_name(event, line_bot_api)
-            r.set(user_id + ':status', 'confirm_name')
+            r.set(channel_id+user_id + ':status', 'confirm_name')
         if user_status == 'input_birth_day':
             confirm_birth_day(event, line_bot_api)
-            r.set(user_id + ':status', 'confirm_birth_day')
+            r.set(channel_id+user_id + ':status', 'confirm_birth_day')
         if user_status == 'input_birth_time':
             confirm_birth_time(event, line_bot_api)
-            r.set(user_id + ':status', 'confirm_birth_time')
+            r.set(channel_id+user_id + ':status', 'confirm_birth_time')
 
         # services
         if user_status == 'input_fate_num':
             # TODO: query line user by fate number
-            fate_num_result(event, line_bot_api, user_id)
-            r.set(user_id + ':status', 'contacted')
+            fate_num_result(event, line_bot_api, user_id, channel_id)
+            r.set(channel_id+user_id + ':status', 'contacted')
 
 
-def fate_num_result(event, line_bot_api, user_id):
+def fate_num_result(event, line_bot_api, user_id, channel_id):
     app.logger.info('Fate num:' + event.message.text)
-    user_name = r.get(user_id + ':name')
+    user_name = r.get(channel_id+user_id + ':name')
     text = '[王小明] 對 [' + user_name + '] 的貴人指數分析如下：\n\n'\
                                      '財運貴人指數：★★★★☆\n'\
                                      '事業貴人指數：★★★☆☆\n'\
