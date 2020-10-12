@@ -2,10 +2,14 @@ import os
 import redis
 import query_string
 from flask import Flask
-from datetime import date, timedelta
 from dotenv import load_dotenv
-from linebot.models import TextSendMessage, TemplateSendMessage, ConfirmTemplate, PostbackAction, ButtonsTemplate,\
-    CarouselTemplate, CarouselColumn, URIAction
+from linebot.models import TextSendMessage
+
+from controller.crm import confirm_gender, confirm_user_info
+from controller.service_1 import love_fate_result, wealth_fate_result, service_1_menu
+from controller.service_2 import ask_instructions, service_2_menu
+from controller.service_3 import service_3_menu, line_booking, confirm_book_time, booking_result
+from controller.template import main_menu_template
 from helper import utils
 
 # start app
@@ -63,9 +67,17 @@ def handle(event, line_bot_api):
         if user_status == 'confirm_birth_time' and postback['action'] == 'confirm_birth_time':
 
             if postback['reply'] == 'yes':
-                confirm_user_info(event, line_bot_api, channel_id, user_id, postback)
+                user_name = r.get(channel_id + user_id + ':name')
+                user_gender = r.get(channel_id + user_id + ':gender')
+                user_gender = {'female': '女', 'male': '男'}[user_gender]
+                user_birth_day = r.get(channel_id + user_id + ':birth_day')
+                user_birth_time = postback['birth_time']
+
+                confirm_user_info(event, line_bot_api, user_name, user_gender, user_birth_day, user_birth_time)
+
                 r.set(channel_id + user_id + ':status', 'confirm_user_info')
                 r.set(channel_id + user_id + ':birth_time', postback['birth_time'])
+
             if postback['reply'] == 'no':
                 previous_status_text = '請填寫您的出生時間。 例如晚上 11：30，請打23:30。'
                 reply_text_message(event, line_bot_api, previous_status_text)
@@ -85,8 +97,8 @@ def handle(event, line_bot_api):
                 show_menu(event, line_bot_api, user_name)
 
                 # Store user info after complete the first stage of the info collection
-                utils.store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day, user_birth_time,
-                                      'contacted')
+                utils.store_user_info(channel_id, user_id, user_name, user_gender,
+                                      user_birth_day, user_birth_time, 'contacted')
 
             if postback['reply'] == 'no':
                 previous_status_text = '請輸入您的姓名。'
@@ -138,7 +150,10 @@ def handle(event, line_bot_api):
             r.set(channel_id + user_id + ':date', postback['date'])
             r.set(channel_id + user_id + ':weekday', postback['weekday'])
             r.set(channel_id + user_id + ':time', postback['time'])
-            confirm_book_time(event, line_bot_api, channel_id, user_id)
+            book_date = postback['date']
+            weekday = postback['weekday']
+            time = postback['time']
+            confirm_book_time(event, line_bot_api, channel_id, user_id, book_date, weekday, time)
 
         if user_status == 'contacted' and postback['action'] == 'confirm_book_time':
             user_name = r.get(channel_id + user_id + ':name')
@@ -153,7 +168,11 @@ def handle(event, line_bot_api):
             user_name = r.get(channel_id + user_id + ':name')
             if postback['reply'] == 'yes':
                 phone = postback['phone']
-                booking_result(event, line_bot_api, channel_id, user_id, user_name, phone)
+                book_date = r.get(channel_id + user_id + ':date')
+                weekday = r.get(channel_id + user_id + ':weekday')
+                time = r.get(channel_id + user_id + ':time')
+
+                booking_result(event, line_bot_api, channel_id, user_id, user_name, phone, book_date, weekday, time)
                 r.delete(channel_id + user_id + ':action')
                 # TODO: 結束預約流程後，要把使用者的預約資訊存入 postgreSQL
 
@@ -166,412 +185,6 @@ def handle(event, line_bot_api):
             app.logger.info('service_4')
 
 
-def booking_result(event, line_bot_api, channel_id, user_id, user_name, phone):
-    book_date = r.get(channel_id + user_id + ':date')
-    weekday = r.get(channel_id + user_id + ':weekday')
-    time = r.get(channel_id + user_id + ':time')
-    text = '[' + user_name + '] 您好，以下是您預約資料：\n\n'\
-           '1. 時間：' + book_date[:2] + '月' + book_date[-2:] + '日 ( ' + weekday + ' ) ' + time + '\n'\
-           '2. 地址：OO市OO區OO路OO號\n'\
-           '3. 電話：' + phone + '\n\n'\
-           '若有要調整預約時間或其它問題，可以在此客服機器人上留言，或打 0912345678 聯絡 OO 老師'
-    line_bot_api.reply_message(
-        event.reply_token,
-        [
-            TextSendMessage(text = text),
-            main_menu_template(user_name)
-        ]
-    )
-
-
-def confirm_book_time(event, line_bot_api, channel_id, user_id):
-
-    book_date = r.get(channel_id + user_id + ':date')
-    weekday = r.get(channel_id + user_id + ':weekday')
-    time = r.get(channel_id + user_id + ':time')
-
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '確認預約時間',
-            template = ConfirmTemplate(
-                text = '您要預約 ' + book_date[:2] + '月' + book_date[-2:] +
-                       '日 (' + weekday + ') ' + time + ' 嗎？',
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_book_time&reply=yes'
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_book_time&reply=no'
-                    )
-                ]
-            )
-        )
-    )
-
-
-def ask_instructions(event, line_bot_api):
-    text = '請對方加入以下的 OO 老師好運勢官方帳號: https://lin.ee/655qqady\n\n'\
-           '再輸入姓名、生日以後，在主選單的「重新輸入生日以及其他功能」裡，按下查詢命盤編號，系統會顯示對方的命盤編號 '
-    line_bot_api.reply_message(
-        event.reply_token,
-        [
-            TextSendMessage(text = text),
-            service_2_menu_template()
-        ]
-    )
-
-
-# TODO: 依照八字相關演算法計算
-def love_fate_result(event, line_bot_api, user_name):
-    today = date.today()
-    text = '[' + user_name + '] ' + str(today.month) + '月' + str(today.day) +\
-           '日愛情運勢\n\n'\
-           '今日愛情運勢：★★★★☆\n'\
-           '今日愛情數字：6\n'\
-           '今日愛情時間：09:00-10:00\n'\
-           '今日愛情顏色：水晶紫\n\n'\
-           '明日愛情運勢：★★★★★\n'\
-           '明日愛情數字：9\n'\
-           '明日愛情時間：19:00-20:00\n'\
-           '明日愛情顏色：湖水藍\n\n'\
-           '說明：顏色包含衣服、包包、鞋子、配件等皆可\n\n'\
-           '[ △△ 運命所 OO 老師關心您，過去 30 天有 20 天見到過您 ]'
-    line_bot_api.reply_message(
-        event.reply_token,
-        [
-            TextSendMessage(text = text),
-            service_1_menu_template()
-        ]
-    )
-
-
-# TODO: 依照八字相關演算法計算
-def wealth_fate_result(event, line_bot_api, user_name):
-    today = date.today()
-    text = '[' + user_name + '] ' + str(today.month) + '月' + str(today.day) +\
-           '日財運運勢\n\n'\
-           '今日財運運勢：★★★★☆\n'\
-           '今日財運數字：6\n'\
-           '今日財運時間：09:00-10:00\n'\
-           '今日財運顏色：水晶紫\n\n'\
-           '明日財運運勢：★★★★★\n'\
-           '明日財運數字：9\n'\
-           '明日財運時間：19:00-20:00\n'\
-           '明日財運顏色：湖水藍\n\n'\
-           '說明：顏色包含衣服、包包、鞋子、配件等皆可\n\n'\
-           '[ △△ 運命所 OO 老師關心您，過去 30 天有 20 天見到過您 ]'
-    line_bot_api.reply_message(
-        event.reply_token,
-        [
-            TextSendMessage(text = text),
-            service_1_menu_template()
-        ]
-    )
-
-
-def line_booking(event, line_bot_api):
-
-    today = date.today()
-    week_dict = {0: '一', 1: '二', 2: '三', 3: '四', 4: '五', 5: '六', 6: '日'}
-
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = 'Carousel template',
-            template = CarouselTemplate(
-                columns = [
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title = ' ',
-                        text = today.strftime('%m/%d')+' ( ' + week_dict[today.weekday()] + ' ) 預約時間',
-                        actions = [
-                            PostbackAction(
-                                label = '14:00',
-                                data = 'action=book_time&time=14:00&date='+today.strftime('%m%d')+'&weekday='+week_dict[today.weekday()]
-                            ),
-                            PostbackAction(
-                                label = '16:00',
-                                data = 'action=book_time&time=16:00&date='+today.strftime('%m%d')+'&weekday='+week_dict[today.weekday()]
-                            ),
-                            PostbackAction(
-                                label = '19:00',
-                                data = 'action=book_time&time=19:00&date='+today.strftime('%m%d')+'&weekday='+week_dict[today.weekday()]
-                            )
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title= ' ',
-                        text = (today+timedelta(days=1)).strftime('%m/%d') + ' ( ' + week_dict[(today+timedelta(days=1)).weekday()] + ' ) 預約時間',
-                        actions = [
-                            PostbackAction(
-                                label = '10:00',
-                                data = 'action=book_time&time=10:00&date='+(today+timedelta(days=1)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=1)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '11:00',
-                                data = 'action=book_time&time=11:00&date='+(today+timedelta(days=1)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=1)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '無',
-                                data = 'action=book_time'
-                            )
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title= ' ',
-                        text = (today+timedelta(days=2)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=2)).weekday()] + ' ) 預約時間',
-                        actions = [
-                            PostbackAction(
-                                label = '14:00',
-                                data = 'action=book_time&time=14:00&date='+(today+timedelta(days=2)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=2)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '16:00',
-                                data = 'action=book_time&time=16:00&date='+(today+timedelta(days=2)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=2)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '19:00',
-                                data = 'action=book_time&time=19:00&date='+(today+timedelta(days=2)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=2)).weekday()]
-                            )
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title= ' ',
-                        text = (today+timedelta(days=3)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=3)).weekday()] + ' ) 預約時間',
-                        actions = [
-                            PostbackAction(
-                                label = '14:00',
-                                data = 'action=book_time&time=14:00&date='+(today+timedelta(days=3)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=3)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '16:00',
-                                data = 'action=book_time&time=16:00&date='+(today+timedelta(days=3)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=3)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '19:00',
-                                data = 'action=book_time&time=19:00&date='+(today+timedelta(days=3)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=3)).weekday()]
-                            )
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title= ' ',
-                        text = (today+timedelta(days=4)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=4)).weekday()] + ' ) 預約時間',
-                        actions = [
-                            PostbackAction(
-                                label = '14:00',
-                                data = 'action=book_time&time=14:00&date='+(today+timedelta(days=4)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=4)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '16:00',
-                                data = 'action=book_time&time=16:00&date='+(today+timedelta(days=4)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=4)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '19:00',
-                                data = 'action=book_time&time=19:00&date='+(today+timedelta(days=4)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=4)).weekday()]
-                            )
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title= ' ',
-                        text = (today+timedelta(days=5)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=5)).weekday()] + ' ) 預約時間',
-                        actions = [
-                            PostbackAction(
-                                label = '14:00',
-                                data = 'action=book_time&time=14:00&date='+(today+timedelta(days=5)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=5)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '16:00',
-                                data = 'action=book_time&time=16:00&date='+(today+timedelta(days=5)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=5)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '19:00',
-                                data = 'action=book_time&time=19:00&date='+(today+timedelta(days=5)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=5)).weekday()]
-                            )
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title= ' ',
-                        text = (today+timedelta(days=6)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=6)).weekday()] + ' ) 預約時間',
-                        actions = [
-                            PostbackAction(
-                                label = '14:00',
-                                data = 'action=book_time&time=14:00&date='+(today+timedelta(days=6)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=6)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '16:00',
-                                data = 'action=book_time&time=16:00&date='+(today+timedelta(days=6)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=6)).weekday()]
-                            ),
-                            PostbackAction(
-                                label = '19:00',
-                                data = 'action=book_time&time=19:00&date='+(today+timedelta(days=6)).strftime('%m%d')+'&weekday='+week_dict[(today+timedelta(days=6)).weekday()]
-                            )
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
-                        title = ' ',
-                        text = '暫不預約',
-                        actions = [
-                            PostbackAction(
-                                label = '暫不預約',
-                                display_text = '暫不預約',
-                                data = 'action=show_menu'
-                            ),
-                            PostbackAction(
-                                label = '暫不預約',
-                                display_text = '暫不預約',
-                                data = 'action=show_menu'
-                            ),
-                            PostbackAction(
-                                label = '暫不預約',
-                                display_text = '暫不預約',
-                                data = 'action=show_menu'
-                            )
-                        ]
-                    )
-                ]
-            )
-        )
-    )
-
-
-def service_3_menu(event, line_bot_api):
-    today = date.today()
-    week_dict = {0: '一', 1: '二', 2: '三', 3: '四', 4: '五', 5: '六', 6: '日'}
-
-    text = '最近一周 OO 老師可預約的時間如下：\n\n'\
-           '1. '+(today+timedelta(days=0)).strftime('%m/%d')+' ( ' + week_dict[today.weekday()] + ' )' \
-           ' 14:00、16:00、19:00\n' \
-           '2. '+(today+timedelta(days=1)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=1)).weekday()] + ' )' \
-           ' 10:00、11:00\n' \
-           '3. '+(today+timedelta(days=2)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=2)).weekday()] + ' )' \
-           ' 14:00、16:00、19:00\n' \
-           '4. '+(today+timedelta(days=3)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=3)).weekday()] + ' )' \
-           ' 14:00、16:00、19:00\n' \
-           '5. '+(today+timedelta(days=4)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=4)).weekday()] + ' )' \
-           ' 14:00、16:00、19:00\n' \
-           '6. '+(today+timedelta(days=5)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=5)).weekday()] + ' )' \
-           ' 14:00、16:00、19:00\n' \
-           '7. '+(today+timedelta(days=6)).strftime('%m/%d')+' ( ' + week_dict[(today+timedelta(days=6)).weekday()] + ' )' \
-           ' 14:00、16:00、19:00\n' \
-
-    line_bot_api.reply_message(
-        event.reply_token,
-        [
-            TextSendMessage(text = text),
-            service_3_menu_template()
-        ]
-    )
-
-
-def service_3_menu_template():
-    return TemplateSendMessage(
-        alt_text = '預約 OO 老師',
-        template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
-            title = '預約 OO 老師',
-            text = '您可以使用以下方式預約',
-            actions = [
-                PostbackAction(
-                    label = '線上預約',
-                    display_text = '現在 LINE 預約',
-                    data = 'action=line_booking'
-                ),
-                URIAction(
-                    label = '電話預約',
-                    uri = 'tel://0912345678'
-                ),
-                PostbackAction(
-                    label = '回主選單',
-                    display_text = '回主選單',
-                    data = 'action=show_menu'
-                ),
-            ]
-        )
-    )
-
-
-def service_2_menu(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        service_2_menu_template()
-    )
-
-
-def service_2_menu_template():
-    return TemplateSendMessage(
-        alt_text = 'OO 老師 幫你找貴人',
-        template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
-            title = 'OO 老師 幫你找貴人',
-            text = '你知道對方的命盤編號嗎？',
-            actions = [
-                PostbackAction(
-                    label = '我知道，我要輸入他的編號',
-                    display_text = '我知道，我要輸入他的編號',
-                    data = 'action=input_fate_num'
-                ),
-                PostbackAction(
-                    label = '不知道，請告訴我怎麼做',
-                    display_text = '不知道，請告訴我怎麼做',
-                    data = 'action=ask_instructions'
-                ),
-                PostbackAction(
-                    label = '回主選單',
-                    display_text = '回主選單',
-                    data = 'action=show_menu'
-                ),
-            ]
-        )
-    )
-
-
-def service_1_menu(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        service_1_menu_template()
-    )
-
-
-def service_1_menu_template():
-    return TemplateSendMessage(
-        alt_text = 'OO 老師 協助您提升運勢',
-        template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
-            title = 'OO 老師 協助您提升運勢',
-            text = '請選擇想要提升哪種運勢？',
-            actions = [
-                PostbackAction(
-                    label = '提升財運運勢',
-                    display_text = '提升財運運勢',
-                    data = 'action=wealth_fate'
-                ),
-                PostbackAction(
-                    label = '提升愛情運勢',
-                    display_text = '提升愛情運勢',
-                    data = 'action=love_fate'
-                ),
-                PostbackAction(
-                    label = '回主選單',
-                    display_text = '回主選單',
-                    data = 'action=show_menu'
-                ),
-            ]
-        )
-    )
-
-
 def reply_text_message(event, line_bot_api, text):
     line_bot_api.reply_message(
         event.reply_token,
@@ -579,96 +192,8 @@ def reply_text_message(event, line_bot_api, text):
     )
 
 
-def confirm_gender(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '請確認性別',
-            template = ConfirmTemplate(
-                text = '您的性別為',
-                actions = [
-                    PostbackAction(
-                        label = '男',
-                        display_text = '男',
-                        data = 'action=confirm_gender&reply=male'
-                    ),
-                    PostbackAction(
-                        label = '女',
-                        display_text = '女',
-                        data = 'action=confirm_gender&reply=female'
-                    )
-                ]
-            )
-        )
-    )
-
-
-def confirm_user_info(event, line_bot_api, channel_id, user_id, postback):
-    user_name = r.get(channel_id + user_id + ':name')
-    user_gender = r.get(channel_id + user_id + ':gender')
-    user_gender = {'female': '女', 'male': '男'}[user_gender]
-    user_birth_day = r.get(channel_id + user_id + ':birth_day')
-    user_birth_time = postback['birth_time']
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '確認所有資料',
-            template = ConfirmTemplate(
-                text = '您是 [' + user_name + '], ' + user_gender + '性, 生日為 ' +
-                       user_birth_day[:4] + '/' + user_birth_day[4:6] + '/' + user_birth_day[-2:] +
-                       ' ' + user_birth_time + ' ?',
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_user_info&reply=yes'
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_user_info&reply=no'
-                    )
-                ]
-            )
-        )
-    )
-
-
 def show_menu(event, line_bot_api, user_name):
     line_bot_api.reply_message(
         event.reply_token,
         main_menu_template(user_name)
-    )
-
-
-def main_menu_template(user_name):
-    return TemplateSendMessage(
-        alt_text = 'Buttons template',
-        template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
-            title = '運命所 OO 老師',
-            text = '提升 [' + user_name + '] 運勢服務',
-            actions = [
-                PostbackAction(
-                    label = '我要提升今明二日運勢',
-                    display_text = '我要提升今明二日運勢',
-                    data = 'action=service_1'
-                ),
-                PostbackAction(
-                    label = '我想找出誰是我的貴人',
-                    display_text = '我想找出誰是我的貴人',
-                    data = 'action=service_2'
-                ),
-                PostbackAction(
-                    label = '我想查詢老師諮詢時間',
-                    display_text = '我想查詢老師諮詢時間',
-                    data = 'action=service_3'
-                ),
-                PostbackAction(
-                    label = '重新輸入生日及其它功能',
-                    display_text = '重新輸入生日及其它功能',
-                    data = 'action=service_4'
-                ),
-            ]
-        )
     )

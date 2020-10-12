@@ -2,8 +2,10 @@ import os
 import redis
 from flask import Flask
 from dotenv import load_dotenv
-from linebot.models import TextSendMessage, TemplateSendMessage, ConfirmTemplate, PostbackAction, MessageAction
-from controller.postback_event import service_2_menu_template
+from linebot.models import TextSendMessage
+
+from controller.crm import confirm_phone, confirm_name, confirm_birth_day, confirm_birth_time
+from controller.service_2 import fate_num_result
 
 # start app
 app = Flask(__name__)
@@ -54,122 +56,9 @@ def handle(event, line_bot_api):
         if user_action == 'input_fate_num':
             # TODO: 這邊要加一段，用 fate number (命盤編號) 來 query 使用者資料的 SQL
             app.logger.info('Fate num:' + event.message.text)
-            fate_num_result(event, line_bot_api, user_id, channel_id)
+            user_name = r.get(channel_id + user_id + ':name')
+            fate_num_result(event, line_bot_api, user_name)
             r.delete(channel_id+user_id + ':action')
         if user_action == 'input_phone':
             app.logger.info('Phone num:' + event.message.text)
             confirm_phone(event, line_bot_api)
-
-
-def confirm_phone(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '請確認電話號碼',
-            template = ConfirmTemplate(
-                text = '您的電話號碼是 ' + event.message.text + ' 嗎？',
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_phone&reply=yes&phone=' + event.message.text
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_phone&reply=no'
-                    )
-                ]
-            )
-        )
-    )
-
-
-def fate_num_result(event, line_bot_api, user_id, channel_id):
-    user_name = r.get(channel_id+user_id + ':name')
-    text = '[王小明] 對 [' + user_name + '] 的貴人指數分析如下：\n\n'\
-                                     '財運貴人指數：★★★★☆\n'\
-                                     '事業貴人指數：★★★☆☆\n'\
-                                     '愛情貴人指數：★★☆☆☆\n\n'\
-                                     '結論：\n'\
-                                     '[王小明] 對 [' + user_name + '] 在財運上最有幫助。'
-    line_bot_api.reply_message(
-        event.reply_token,
-        [
-            TextSendMessage(text = text),
-            service_2_menu_template()
-        ]
-    )
-
-
-def confirm_name(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '請確認姓名',
-            template = ConfirmTemplate(
-                text = '您的姓名是 [' + event.message.text + '] 嗎？',
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_name&reply=yes&name=' + event.message.text
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_name&reply=no'
-                    )
-                ]
-            )
-        )
-    )
-
-
-def confirm_birth_day(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '請確認國曆生日',
-            template = ConfirmTemplate(
-                text = '您的國曆生日為 ' +
-                       event.message.text[:4] + '年' + event.message.text[4:6] + '月' + event.message.text[-2:] + '日 嗎？',
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_birth_day&reply=yes&birth_day=' + event.message.text
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_birth_day&reply=no'
-                    )
-                ]
-            )
-        )
-    )
-
-
-def confirm_birth_time(event, line_bot_api):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TemplateSendMessage(
-            alt_text = '請確認出生時間',
-            template = ConfirmTemplate(
-                text = '您的出生時間為 ' + event.message.text + ' 嗎？',
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_birth_time&reply=yes&birth_time=' + event.message.text
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_birth_time&reply=no'
-                    )
-                ]
-            )
-        )
-    )
