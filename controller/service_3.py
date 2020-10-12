@@ -21,7 +21,7 @@ def line_booking(event, line_bot_api):
     )
 
 
-def confirm_book_time(event, line_bot_api, channel_id, user_id, book_date, weekday, time):
+def confirm_book_time(event, line_bot_api, book_date, weekday, time):
     line_bot_api.reply_message(
         event.reply_token,
         TemplateSendMessage(
@@ -46,12 +46,12 @@ def confirm_book_time(event, line_bot_api, channel_id, user_id, book_date, weekd
     )
 
 
-def booking_result(event, line_bot_api, channel_id, user_id, user_name, phone, book_date, weekday, time):
+def booking_result(event, line_bot_api, user_name, phone, book_date, weekday, time):
     text = '[' + user_name + '] 您好，以下是您預約資料：\n\n'\
                              '1. 時間：' + book_date[:2] + '月' + book_date[-2:] + '日 ( ' + weekday + ' ) ' + time + '\n'\
-                                                                                                                 '2. 地址：OO市OO區OO路OO號\n'\
-                                                                                                                 '3. 電話：' + phone + '\n\n'\
-                                                                                                                                    '若有要調整預約時間或其它問題，可以在此客服機器人上留言，或打 0912345678 聯絡 OO 老師'
+                             '2. 地址：OO市OO區OO路OO號\n'\
+                             '3. 電話：' + phone + '\n\n'\
+                             '若有要調整預約時間或其它問題，可以在此客服機器人上留言，或打 0912345678 聯絡 OO 老師'
     line_bot_api.reply_message(
         event.reply_token,
         [

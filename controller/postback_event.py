@@ -33,8 +33,9 @@ def handle(event, line_bot_api):
 
     if user_status:
 
-        if postback['action'] == 'confirm_gender' and postback['status'] == 'confirm_gender':
-            user_status = 'confirm_gender'
+        if 'status' in postback:
+            if postback['status'] == 'confirm_gender':
+                user_status = 'confirm_gender'
 
         if user_status == 'confirm_name' and postback['action'] == 'confirm_name':
 
@@ -157,7 +158,7 @@ def handle(event, line_bot_api):
             book_date = postback['date']
             weekday = postback['weekday']
             time = postback['time']
-            confirm_book_time(event, line_bot_api, channel_id, user_id, book_date, weekday, time)
+            confirm_book_time(event, line_bot_api, book_date, weekday, time)
 
         if user_status == 'contacted' and postback['action'] == 'confirm_book_time':
             app.logger.info('confirm_book_time')
@@ -180,7 +181,7 @@ def handle(event, line_bot_api):
                 weekday = r.get(channel_id + user_id + ':weekday')
                 time = r.get(channel_id + user_id + ':time')
 
-                booking_result(event, line_bot_api, channel_id, user_id, user_name, phone, book_date, weekday, time)
+                booking_result(event, line_bot_api, user_name, phone, book_date, weekday, time)
                 r.delete(channel_id + user_id + ':action')
                 # TODO: 結束預約流程後，要把使用者的預約資訊存入 postgreSQL
 

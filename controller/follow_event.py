@@ -29,8 +29,8 @@ def handle(event, line_bot_api):
             event.reply_token,
             [
                 ImageSendMessage(
-                    original_content_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
-                    preview_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg'
+                    original_content_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_01_small.png',
+                    preview_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_01_small.png'
                 ),
                 TextSendMessage(text = '歡迎來到「唐綺陽運勢所」，我們將提供您的運勢預報'),
                 TextSendMessage(text = '請輸入您的姓名'),

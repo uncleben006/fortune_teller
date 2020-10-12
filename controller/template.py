@@ -10,7 +10,7 @@ def main_menu_template(user_name):
     return TemplateSendMessage(
         alt_text = '運命所 OO 老師',
         template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
+            thumbnail_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_10_small.png',
             title = '運命所 OO 老師',
             text = '提升 [' + user_name + '] 運勢服務',
             actions = [
@@ -39,39 +39,11 @@ def main_menu_template(user_name):
     )
 
 
-def service_2_menu_template():
-    return TemplateSendMessage(
-        alt_text = 'OO 老師 幫你找貴人',
-        template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
-            title = 'OO 老師 幫你找貴人',
-            text = '你知道對方的命盤編號嗎？',
-            actions = [
-                PostbackAction(
-                    label = '我知道，我要輸入他的編號',
-                    display_text = '我知道，我要輸入他的編號',
-                    data = 'action=input_fate_num'
-                ),
-                PostbackAction(
-                    label = '不知道，請告訴我怎麼做',
-                    display_text = '不知道，請告訴我怎麼做',
-                    data = 'action=ask_instructions'
-                ),
-                PostbackAction(
-                    label = '回主選單',
-                    display_text = '回主選單',
-                    data = 'action=show_menu'
-                ),
-            ]
-        )
-    )
-
-
 def service_1_menu_template():
     return TemplateSendMessage(
         alt_text = 'OO 老師 協助您提升運勢',
         template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
+            thumbnail_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_09_small.png',
             title = 'OO 老師 協助您提升運勢',
             text = '請選擇想要提升哪種運勢？',
             actions = [
@@ -95,11 +67,39 @@ def service_1_menu_template():
     )
 
 
+def service_2_menu_template():
+    return TemplateSendMessage(
+        alt_text = 'OO 老師 幫你找貴人',
+        template = ButtonsTemplate(
+            thumbnail_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_03_small.png',
+            title = 'OO 老師 幫你找貴人',
+            text = '你知道對方的命盤編號嗎？',
+            actions = [
+                PostbackAction(
+                    label = '我知道，我要輸入他的編號',
+                    display_text = '我知道，我要輸入他的編號',
+                    data = 'action=input_fate_num'
+                ),
+                PostbackAction(
+                    label = '不知道，請告訴我怎麼做',
+                    display_text = '不知道，請告訴我怎麼做',
+                    data = 'action=ask_instructions'
+                ),
+                PostbackAction(
+                    label = '回主選單',
+                    display_text = '回主選單',
+                    data = 'action=show_menu'
+                ),
+            ]
+        )
+    )
+
+
 def service_3_menu_template():
     return TemplateSendMessage(
         alt_text = '預約 OO 老師',
         template = ButtonsTemplate(
-            thumbnail_image_url = 'https://yt3.ggpht.com/-jHaW03KgtAc/AAAAAAAAAAI/AAAAAAAAAAA/9EFyOq-T5Ts/s900-c-k-no/photo.jpg',
+            thumbnail_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_07_small.png',
             title = '預約 OO 老師',
             text = '您可以使用以下方式預約',
             actions = [
@@ -148,13 +148,22 @@ def service_3_text():
 def line_booking_template():
     today = date.today()
     week_dict = {0: '一', 1: '二', 2: '三', 3: '四', 4: '五', 5: '六', 6: '日'}
+    week_img = {
+        0: 'https://d2q275vdzul5bt.cloudfront.net/vassets/cfac4ec522dc6c13297b2df81d288b3b96d96e97/socialThumb.jpg',
+        1: 'https://image.shutterstock.com/image-vector/word-tuesday-colorful-day-week-260nw-1285201639.jpg',
+        2: 'https://www.thefactsite.com/wp-content/uploads/2017/07/wednesday-facts.jpg',
+        3: 'https://img3.stockfresh.com/files/e/enterlinedesign/m/88/7684297_stock-photo-thursday-colorful-watercolor-and-ink-word-art.jpg',
+        4: 'https://www.brookesandco.net/wp-content/uploads/2018/03/Brookes-Co-Friday-Feeling.jpg',
+        5: 'https://i.pinimg.com/originals/9e/bf/24/9ebf24a0b925137494ec586f1dbfce2d.jpg',
+        6: 'https://static.vecteezy.com/system/resources/previews/000/135/921/original/vector-sunday-lettering-watercolor.jpg'
+    }
 
     return TemplateSendMessage(
         alt_text = '預約時間',
         template = CarouselTemplate(
             columns = [
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = week_img[today.weekday()],
                     title = ' ',
                     text = today.strftime('%m/%d') + ' ( ' + week_dict[today.weekday()] + ' ) 預約時間',
                     actions = [
@@ -176,7 +185,7 @@ def line_booking_template():
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = week_img[(today + timedelta(days = 1)).weekday()],
                     title = ' ',
                     text = (today + timedelta(days = 1)).strftime('%m/%d') + ' ( ' + week_dict[
                         (today + timedelta(days = 1)).weekday()] + ' ) 預約時間',
@@ -198,7 +207,7 @@ def line_booking_template():
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = week_img[(today + timedelta(days = 2)).weekday()],
                     title = ' ',
                     text = (today + timedelta(days = 2)).strftime('%m/%d') + ' ( ' + week_dict[
                         (today + timedelta(days = 2)).weekday()] + ' ) 預約時間',
@@ -221,7 +230,7 @@ def line_booking_template():
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = week_img[(today + timedelta(days = 3)).weekday()],
                     title = ' ',
                     text = (today + timedelta(days = 3)).strftime('%m/%d') + ' ( ' + week_dict[
                         (today + timedelta(days = 3)).weekday()] + ' ) 預約時間',
@@ -244,7 +253,7 @@ def line_booking_template():
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = week_img[(today + timedelta(days = 4)).weekday()],
                     title = ' ',
                     text = (today + timedelta(days = 4)).strftime('%m/%d') + ' ( ' + week_dict[
                         (today + timedelta(days = 4)).weekday()] + ' ) 預約時間',
@@ -267,7 +276,7 @@ def line_booking_template():
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = week_img[(today + timedelta(days = 5)).weekday()],
                     title = ' ',
                     text = (today + timedelta(days = 5)).strftime('%m/%d') + ' ( ' + week_dict[
                         (today + timedelta(days = 5)).weekday()] + ' ) 預約時間',
@@ -290,7 +299,7 @@ def line_booking_template():
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = week_img[(today + timedelta(days = 6)).weekday()],
                     title = ' ',
                     text = (today + timedelta(days = 6)).strftime('%m/%d') + ' ( ' + week_dict[
                         (today + timedelta(days = 6)).weekday()] + ' ) 預約時間',
@@ -313,7 +322,7 @@ def line_booking_template():
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url = 'https://huangyedu.com/Data/Thumb/10/478de4b85b63532b18bc3b3cca0e48e1.jpg',
+                    thumbnail_image_url = 'https://cdn1.vectorstock.com/i/1000x1000/58/45/mission-aborted-rubber-stamp-vector-12765845.jpg',
                     title = ' ',
                     text = '暫不預約',
                     actions = [
@@ -389,3 +398,30 @@ def service_2_instructions_text():
     text = '請對方加入以下的 OO 老師好運勢官方帳號: https://lin.ee/655qqady\n\n'\
            '再輸入姓名、生日以後，在主選單的「重新輸入生日以及其他功能」裡，按下查詢命盤編號，系統會顯示對方的命盤編號 '
     return text
+
+
+def service_4_menu_template():
+    return TemplateSendMessage(
+        alt_text = '重新輸入生日及其它功能',
+        template = ButtonsTemplate(
+            thumbnail_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_05_small.png',
+            text = '重新輸入生日及其它功能',
+            actions = [
+                PostbackAction(
+                    label = '重新輸入生日',
+                    display_text = '重新輸入生日',
+                    data = 'action=confirm_gender&status=confirm_gender'
+                ),
+                PostbackAction(
+                    label = '查詢您的命盤編號',
+                    display_text = '查詢命盤編號',
+                    data = 'action=query_fate_num'
+                ),
+                PostbackAction(
+                    label = '回主選單',
+                    display_text = '回主選單',
+                    data = 'action=show_menu'
+                ),
+            ]
+        )
+    )
