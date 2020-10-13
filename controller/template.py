@@ -404,7 +404,7 @@ def service_4_menu_template():
     return TemplateSendMessage(
         alt_text = '重新輸入生日及其它功能',
         template = ButtonsTemplate(
-            thumbnail_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_05_small.png',
+            thumbnail_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_06_small.png',
             text = '重新輸入生日及其它功能',
             actions = [
                 PostbackAction(
