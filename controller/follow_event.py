@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
 
 from controller.postback_event import show_menu
+from controller.template import welcome_text
 from helper import utils
 
 # start app
@@ -32,7 +33,7 @@ def handle(event, line_bot_api):
                     original_content_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_01_small.png',
                     preview_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_01_small.png'
                 ),
-                TextSendMessage(text = '歡迎來到「唐綺陽運勢所」，我們將提供您的運勢預報'),
+                TextSendMessage(text = welcome_text()),
                 TextSendMessage(text = '請輸入您的姓名'),
             ]
         )
