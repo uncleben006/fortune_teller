@@ -40,18 +40,18 @@ def handle(event, line_bot_api):
         if user_status == 'confirm_name' and postback['action'] == 'confirm_name':
 
             if postback['reply'] == 'yes':
-                confirm_gender(event, line_bot_api)
+                confirm_gender(event, line_bot_api, channel_id)
                 r.set(channel_id + user_id + ':status', 'confirm_gender')
                 r.set(channel_id + user_id + ':name', postback['name'])
 
             if postback['reply'] == 'no':
-                previous_status_text = '請輸入您的姓名'
+                previous_status_text = utils.get_line_message(channel_id, 'welcome_text_second')
                 reply_text_message(event, line_bot_api, previous_status_text)
                 r.set(channel_id + user_id + ':status', 'input_name')
 
         if user_status == 'confirm_gender' and postback['action'] == 'confirm_gender':
             user_name = r.get(channel_id + user_id + ':name')
-            next_status_text = '[' + user_name + '] 您好,請填寫您的國曆生日。 如1979年8月30日。請打19790830。'
+            next_status_text = utils.get_line_message(channel_id, 'input_birth_day').format(name=user_name)
             reply_text_message(event, line_bot_api, next_status_text)
             r.set(channel_id + user_id + ':status', 'input_birth_day')
             r.set(channel_id + user_id + ':gender', postback['reply'])
@@ -59,13 +59,13 @@ def handle(event, line_bot_api):
         if user_status == 'confirm_birth_day' and postback['action'] == 'confirm_birth_day':
 
             if postback['reply'] == 'yes':
-                next_status_text = '請填寫您的出生時間。 例如晚上 11：30，請打23:30。'
+                next_status_text = utils.get_line_message(channel_id, 'input_birth_time')
                 reply_text_message(event, line_bot_api, next_status_text)
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
                 r.set(channel_id + user_id + ':birth_day', postback['birth_day'])
             if postback['reply'] == 'no':
                 user_name = r.get(channel_id + user_id + ':name')
-                previous_status_text = '[' + user_name + '] 您好,請填寫您的國曆生日。 如1979年8月30日。請打19790830。'
+                previous_status_text = utils.get_line_message(channel_id, 'input_birth_day').format(name=user_name)
                 reply_text_message(event, line_bot_api, previous_status_text)
                 r.set(channel_id + user_id + ':status', 'input_birth_day')
 
@@ -78,13 +78,14 @@ def handle(event, line_bot_api):
                 user_birth_day = r.get(channel_id + user_id + ':birth_day')
                 user_birth_time = postback['birth_time']
 
-                confirm_user_info(event, line_bot_api, user_name, user_gender, user_birth_day, user_birth_time)
+                confirm_user_info(event, line_bot_api, channel_id, user_name, user_gender, user_birth_day,
+                                  user_birth_time)
 
                 r.set(channel_id + user_id + ':status', 'confirm_user_info')
                 r.set(channel_id + user_id + ':birth_time', postback['birth_time'])
 
             if postback['reply'] == 'no':
-                previous_status_text = '請填寫您的出生時間。 例如晚上 11：30，請打23:30。'
+                previous_status_text = utils.get_line_message(channel_id, 'input_birth_time')
                 reply_text_message(event, line_bot_api, previous_status_text)
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
 
@@ -106,7 +107,7 @@ def handle(event, line_bot_api):
                                       user_birth_day, user_birth_time, 'contacted')
 
             if postback['reply'] == 'no':
-                previous_status_text = '請輸入您的姓名。'
+                previous_status_text = utils.get_line_message(channel_id, 'welcome_text_second')
                 reply_text_message(event, line_bot_api, previous_status_text)
                 r.set(channel_id + user_id + ':status', 'input_name')
 

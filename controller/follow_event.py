@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
 
 from controller.postback_event import show_menu
-from controller.template import welcome_text
 from helper import utils
 
 # start app
@@ -29,12 +28,13 @@ def handle(event, line_bot_api):
         line_bot_api.reply_message(
             event.reply_token,
             [
+                # 從 redis 拿 message，若沒有則從 DB 搜尋全部並且存進 redis ( channel_id+context_id => message)
                 ImageSendMessage(
-                    original_content_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_01_small.png',
-                    preview_image_url = 'https://destiny.quanzar.com.tw/wp-content/uploads/2020/09/fortune-teller_01_small.png'
+                    original_content_url = utils.get_line_message(channel_id, 'welcome_image'),
+                    preview_image_url = utils.get_line_message(channel_id, 'welcome_image')
                 ),
-                TextSendMessage(text = welcome_text()),
-                TextSendMessage(text = '請輸入您的姓名'),
+                TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_first')),
+                TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_second')),
             ]
         )
 

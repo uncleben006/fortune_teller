@@ -1,8 +1,17 @@
-from flask import Flask
-import json
 import os
+import json
+import redis
 import psycopg2
+from flask import Flask
+from dotenv import load_dotenv
+
+# start app
 app = Flask(__name__)
+load_dotenv(os.path.join(os.getcwd(), '.env'))
+
+# Init Redis
+redis_url = os.getenv('REDIS_URL')
+r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
 
 
 # Query channel information using channel_id
@@ -86,3 +95,35 @@ def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day,
 
     cursor.close()
     conn.close()
+
+
+# Get line message
+# If find the message in redis, then simply return the message.
+# But if not, query from DB and set them in redis. Then return the message.
+def get_line_message(channel_id, context_id):
+
+    message_id = channel_id + context_id
+
+    if r.exists(channel_id+context_id):
+        return r.get(message_id)
+    else:
+        conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+        cursor = conn.cursor()
+
+        sql = "SELECT context_id, message FROM line_message WHERE channel_id = '{channel_id}'"
+        sql = sql.format(channel_id = channel_id)
+
+        app.logger.warning("No message in Redis, start query: " + sql)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+
+        for result in results:
+            context_id = result[0]
+            message = result[1]
+            r.set(channel_id+context_id, message)
+
+        app.logger.info("Results: " + str(results))
+        cursor.close()
+        conn.close()
+
+        return r.get(message_id)

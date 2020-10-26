@@ -425,7 +425,3 @@ def service_4_menu_template():
             ]
         )
     )
-
-
-def welcome_text():
-    return '歡迎來到「△△運命所」，○○老師將提供您的運勢預報'

@@ -32,8 +32,8 @@ def handle(event, line_bot_api):
         )
 
     if event.message.text == 'clear':
-        # delete redis which key prefix is current user_id
-        for key in r.scan_iter(channel_id + ":*"):
+        # delete redis which key prefix is current channel_id
+        for key in r.scan_iter(channel_id + "*"):
             r.delete(key)
         line_bot_api.reply_message(
             event.reply_token,
@@ -43,13 +43,13 @@ def handle(event, line_bot_api):
     if user_status:
         # users data collecting
         if user_status == 'input_name':
-            confirm_name(event, line_bot_api)
+            confirm_name(event, line_bot_api, channel_id)
             r.set(channel_id+user_id + ':status', 'confirm_name')
         if user_status == 'input_birth_day':
-            confirm_birth_day(event, line_bot_api)
+            confirm_birth_day(event, line_bot_api, channel_id)
             r.set(channel_id+user_id + ':status', 'confirm_birth_day')
         if user_status == 'input_birth_time':
-            confirm_birth_time(event, line_bot_api)
+            confirm_birth_time(event, line_bot_api, channel_id)
             r.set(channel_id+user_id + ':status', 'confirm_birth_time')
 
         # services
@@ -61,4 +61,4 @@ def handle(event, line_bot_api):
             r.delete(channel_id+user_id + ':action')
         if user_action == 'input_phone':
             app.logger.info('Phone num:' + event.message.text)
-            confirm_phone(event, line_bot_api)
+            confirm_phone(event, line_bot_api, channel_id)
