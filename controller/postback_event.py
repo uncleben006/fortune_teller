@@ -5,7 +5,7 @@ from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage
 
-from controller.crm import confirm_gender, confirm_user_info
+from controller.crm import confirm_gender, confirm_user_info, input_birth_day, input_birth_time
 from controller.service_1 import love_fate_result, wealth_fate_result, service_1_menu
 from controller.service_2 import ask_instructions, service_2_menu
 from controller.service_3 import service_3_menu, line_booking, confirm_book_time, booking_result
@@ -45,28 +45,24 @@ def handle(event, line_bot_api):
                 r.set(channel_id + user_id + ':name', postback['name'])
 
             if postback['reply'] == 'no':
-                previous_status_text = utils.get_line_message(channel_id, 'welcome_text_second')
-                reply_text_message(event, line_bot_api, previous_status_text)
+                reply_text_message(event, line_bot_api, utils.get_line_message(channel_id, 'welcome_text_second'))
                 r.set(channel_id + user_id + ':status', 'input_name')
 
         if user_status == 'confirm_gender' and postback['action'] == 'confirm_gender':
             user_name = r.get(channel_id + user_id + ':name')
-            next_status_text = utils.get_line_message(channel_id, 'input_birth_day').format(name=user_name)
-            reply_text_message(event, line_bot_api, next_status_text)
+            input_birth_day(event, line_bot_api, channel_id, user_name)
             r.set(channel_id + user_id + ':status', 'input_birth_day')
             r.set(channel_id + user_id + ':gender', postback['reply'])
 
         if user_status == 'confirm_birth_day' and postback['action'] == 'confirm_birth_day':
 
             if postback['reply'] == 'yes':
-                next_status_text = utils.get_line_message(channel_id, 'input_birth_time')
-                reply_text_message(event, line_bot_api, next_status_text)
+                input_birth_time(event, line_bot_api, channel_id)
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
                 r.set(channel_id + user_id + ':birth_day', postback['birth_day'])
             if postback['reply'] == 'no':
                 user_name = r.get(channel_id + user_id + ':name')
-                previous_status_text = utils.get_line_message(channel_id, 'input_birth_day').format(name=user_name)
-                reply_text_message(event, line_bot_api, previous_status_text)
+                input_birth_day(event, line_bot_api, channel_id, user_name)
                 r.set(channel_id + user_id + ':status', 'input_birth_day')
 
         if user_status == 'confirm_birth_time' and postback['action'] == 'confirm_birth_time':
@@ -78,15 +74,14 @@ def handle(event, line_bot_api):
                 user_birth_day = r.get(channel_id + user_id + ':birth_day')
                 user_birth_time = postback['birth_time']
 
-                confirm_user_info(event, line_bot_api, channel_id, user_name, user_gender, user_birth_day,
-                                  user_birth_time)
+                confirm_user_info(event, line_bot_api, channel_id,
+                                  user_name, user_gender, user_birth_day, user_birth_time)
 
                 r.set(channel_id + user_id + ':status', 'confirm_user_info')
                 r.set(channel_id + user_id + ':birth_time', postback['birth_time'])
 
             if postback['reply'] == 'no':
-                previous_status_text = utils.get_line_message(channel_id, 'input_birth_time')
-                reply_text_message(event, line_bot_api, previous_status_text)
+                input_birth_time(event, line_bot_api, channel_id)
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
 
         if user_status == 'confirm_user_info' and postback['action'] == 'confirm_user_info':

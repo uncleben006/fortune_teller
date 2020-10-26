@@ -1,4 +1,4 @@
-from linebot.models import TemplateSendMessage, ConfirmTemplate, PostbackAction
+from linebot.models import TemplateSendMessage, ConfirmTemplate, PostbackAction, TextSendMessage
 
 from helper import utils
 
@@ -51,6 +51,13 @@ def confirm_gender(event, line_bot_api, channel_id):
     )
 
 
+def input_birth_day(event, line_bot_api, channel_id, user_name):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text = utils.get_line_message(channel_id, 'input_birth_day').format(name=user_name))
+    )
+
+
 def confirm_birth_day(event, line_bot_api, channel_id):
     line_bot_api.reply_message(
         event.reply_token,
@@ -77,27 +84,10 @@ def confirm_birth_day(event, line_bot_api, channel_id):
     )
 
 
-def confirm_phone(event, line_bot_api, channel_id):
+def input_birth_time(event, line_bot_api, channel_id):
     line_bot_api.reply_message(
         event.reply_token,
-        TemplateSendMessage(
-            alt_text = '請確認電話號碼',
-            template = ConfirmTemplate(
-                text = utils.get_line_message(channel_id, 'confirm_phone').format(phone=event.message.text),
-                actions = [
-                    PostbackAction(
-                        label = '是',
-                        display_text = '是',
-                        data = 'action=confirm_phone&reply=yes&phone=' + event.message.text
-                    ),
-                    PostbackAction(
-                        label = '否',
-                        display_text = '否',
-                        data = 'action=confirm_phone&reply=no'
-                    )
-                ]
-            )
-        )
+        TextSendMessage(text = utils.get_line_message(channel_id, 'input_birth_time'))
     )
 
 
@@ -147,6 +137,30 @@ def confirm_user_info(event, line_bot_api, channel_id, user_name, user_gender, u
                         label = '否',
                         display_text = '否',
                         data = 'action=confirm_user_info&reply=no'
+                    )
+                ]
+            )
+        )
+    )
+
+
+def confirm_phone(event, line_bot_api, channel_id):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TemplateSendMessage(
+            alt_text = '請確認電話號碼',
+            template = ConfirmTemplate(
+                text = utils.get_line_message(channel_id, 'confirm_phone').format(phone=event.message.text),
+                actions = [
+                    PostbackAction(
+                        label = '是',
+                        display_text = '是',
+                        data = 'action=confirm_phone&reply=yes&phone=' + event.message.text
+                    ),
+                    PostbackAction(
+                        label = '否',
+                        display_text = '否',
+                        data = 'action=confirm_phone&reply=no'
                     )
                 ]
             )
