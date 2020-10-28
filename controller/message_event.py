@@ -25,6 +25,7 @@ def handle(event, line_bot_api):
     user_name = r.get(channel_id + user_id + ':name')
     user_status = r.get(channel_id+user_id + ':status')
     user_action = r.get(channel_id+user_id + ':action')
+    message = None
 
     log = "User {user}  send message: {message}"\
         .format(user = {'id': user_id, 'name': user_name, 'status': user_status, 'action': user_action}, message = event.message.text)
@@ -55,20 +56,21 @@ def handle(event, line_bot_api):
     if user_status:
         # users data collecting
         if user_status == 'input_name':
-            confirm_name(event, line_bot_api, channel_id)
+            message = confirm_name(channel_id, event.message.text)
             r.set(channel_id+user_id + ':status', 'confirm_name')
         if user_status == 'input_birth_day':
-            confirm_birth_day(event, line_bot_api, channel_id)
+            message = confirm_birth_day(channel_id, event.message.text)
             r.set(channel_id+user_id + ':status', 'confirm_birth_day')
         if user_status == 'input_birth_time':
-            confirm_birth_time(event, line_bot_api, channel_id)
+            message = confirm_birth_time(channel_id, event.message.text)
             r.set(channel_id+user_id + ':status', 'confirm_birth_time')
 
         # services
         if user_action == 'input_fate_num':
             # TODO: 找貴人功能: 輸入了命盤編號後，要依照命盤編號找出對應的人的生辰時日，再計算彼此向性
             message = fate_num_result(channel_id, user_name)
-            send_message(event, line_bot_api, message)
             r.delete(channel_id+user_id + ':action')
         if user_action == 'input_phone':
-            confirm_phone(event, line_bot_api, channel_id)
+            message = confirm_phone(channel_id, event.message.text)
+
+        send_message(event, line_bot_api, message)

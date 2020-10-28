@@ -44,7 +44,7 @@ def handle(event, line_bot_api):
         if user_status == 'confirm_name' and postback['action'] == 'confirm_name':
 
             if postback['reply'] == 'yes':
-                confirm_gender(event, line_bot_api, channel_id)
+                message = confirm_gender(channel_id)
                 r.set(channel_id + user_id + ':status', 'confirm_gender')
                 r.set(channel_id + user_id + ':name', postback['name'])
 
@@ -53,18 +53,19 @@ def handle(event, line_bot_api):
                 r.set(channel_id + user_id + ':status', 'input_name')
 
         if user_status == 'confirm_gender' and postback['action'] == 'confirm_gender':
-            input_birth_day(event, line_bot_api, channel_id, user_name)
+            message = input_birth_day(channel_id, user_name)
             r.set(channel_id + user_id + ':status', 'input_birth_day')
             r.set(channel_id + user_id + ':gender', postback['reply'])
 
         if user_status == 'confirm_birth_day' and postback['action'] == 'confirm_birth_day':
 
             if postback['reply'] == 'yes':
-                input_birth_time(event, line_bot_api, channel_id)
+                message = input_birth_time(channel_id)
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
+                print(postback['birth_day'])
                 r.set(channel_id + user_id + ':birth_day', postback['birth_day'])
             if postback['reply'] == 'no':
-                input_birth_day(event, line_bot_api, channel_id, user_name)
+                message = input_birth_day(channel_id, user_name)
                 r.set(channel_id + user_id + ':status', 'input_birth_day')
 
         if user_status == 'confirm_birth_time' and postback['action'] == 'confirm_birth_time':
@@ -73,16 +74,16 @@ def handle(event, line_bot_api):
                 user_gender = r.get(channel_id + user_id + ':gender')
                 user_gender = {'female': '女', 'male': '男'}[user_gender]
                 user_birth_day = r.get(channel_id + user_id + ':birth_day')
+                print(user_birth_day)
                 user_birth_time = postback['birth_time']
 
-                confirm_user_info(event, line_bot_api, channel_id,
-                                  user_name, user_gender, user_birth_day, user_birth_time)
+                message = confirm_user_info(channel_id, user_name, user_gender, user_birth_day, user_birth_time)
 
                 r.set(channel_id + user_id + ':status', 'confirm_user_info')
                 r.set(channel_id + user_id + ':birth_time', postback['birth_time'])
 
             if postback['reply'] == 'no':
-                input_birth_time(event, line_bot_api, channel_id)
+                message = input_birth_time(channel_id)
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
 
         if user_status == 'confirm_user_info' and postback['action'] == 'confirm_user_info':
