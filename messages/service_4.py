@@ -26,7 +26,7 @@ def service_4_menu_template(channel_id):
                 PostbackAction(
                     label = '查詢您的命盤編號',
                     display_text = '查詢命盤編號',
-                    data = 'action=query_fate_num'
+                    data = 'action=return_fate_num'
                 ),
                 PostbackAction(
                     label = '回主選單',

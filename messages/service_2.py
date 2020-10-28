@@ -19,7 +19,7 @@ def service_2_menu_template(channel_id, user_name):
                 PostbackAction(
                     label = '不知道，請告訴我怎麼做',
                     display_text = '不知道，請告訴我怎麼做',
-                    data = 'action=ask_instructions'
+                    data = 'action=input_fate_instructions'
                 ),
                 PostbackAction(
                     label = '回主選單',
@@ -29,6 +29,10 @@ def service_2_menu_template(channel_id, user_name):
             ]
         )
     )
+
+
+def input_fate_num(channel_id):
+    return TextSendMessage(text = utils.get_line_message(channel_id, 'input_fate_num'))
 
 
 # TODO: 找貴人功能: 輸入了命盤編號後，要依照命盤編號找出對應的人的生辰時日，再計算彼此向性
@@ -47,8 +51,8 @@ def fate_num_result(channel_id, user_name):
     return template
 
 
-def service_2_instructions(channel_id, user_name):
-    text = utils.get_line_message(channel_id, 'service_2_instructions').format(name=user_name)
+def input_fate_instructions(channel_id, user_name):
+    text = utils.get_line_message(channel_id, 'input_fate_instructions').format(name=user_name)
     template = [
         TextSendMessage(text = text),
         service_2_menu_template(channel_id, user_name)

@@ -5,11 +5,11 @@ from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage
 
-from messages.crm import confirm_gender, confirm_user_info, input_birth_day, input_birth_time
+from messages.crm import confirm_gender, confirm_user_info, input_birth_day, input_birth_time, input_name
 from messages.general import send_message, main_menu_template
 from messages.service_1 import love_fate, wealth_fate, service_1_menu_template
-from messages.service_2 import service_2_instructions, service_2_menu_template
-from messages.service_3 import service_3_menu, confirm_book_time, booking_result, line_booking_template, input_phone
+from messages.service_2 import input_fate_instructions, service_2_menu_template, input_fate_num
+from messages.service_3 import service_3_menu, confirm_book_time, booking_result, line_booking, input_phone
 from messages.service_4 import return_fate_num, service_4_menu_template
 from helper import utils
 
@@ -42,12 +42,10 @@ def handle(event, line_bot_api):
             postback['reply'] = r.get(channel_id + user_id + ':gender')
 
         if user_status == 'confirm_name' and postback['action'] == 'confirm_name':
-
             if postback['reply'] == 'yes':
                 message = confirm_gender(channel_id)
                 r.set(channel_id + user_id + ':status', 'confirm_gender')
                 r.set(channel_id + user_id + ':name', postback['name'])
-
             if postback['reply'] == 'no':
                 message = TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_second'))
                 r.set(channel_id + user_id + ':status', 'input_name')
@@ -58,27 +56,21 @@ def handle(event, line_bot_api):
             r.set(channel_id + user_id + ':gender', postback['reply'])
 
         if user_status == 'confirm_birth_day' and postback['action'] == 'confirm_birth_day':
-
             if postback['reply'] == 'yes':
                 message = input_birth_time(channel_id)
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
-                print(postback['birth_day'])
                 r.set(channel_id + user_id + ':birth_day', postback['birth_day'])
             if postback['reply'] == 'no':
                 message = input_birth_day(channel_id, user_name)
                 r.set(channel_id + user_id + ':status', 'input_birth_day')
 
         if user_status == 'confirm_birth_time' and postback['action'] == 'confirm_birth_time':
-
             if postback['reply'] == 'yes':
                 user_gender = r.get(channel_id + user_id + ':gender')
                 user_gender = {'female': '女', 'male': '男'}[user_gender]
                 user_birth_day = r.get(channel_id + user_id + ':birth_day')
-                print(user_birth_day)
                 user_birth_time = postback['birth_time']
-
                 message = confirm_user_info(channel_id, user_name, user_gender, user_birth_day, user_birth_time)
-
                 r.set(channel_id + user_id + ':status', 'confirm_user_info')
                 r.set(channel_id + user_id + ':birth_time', postback['birth_time'])
 
@@ -87,22 +79,17 @@ def handle(event, line_bot_api):
                 r.set(channel_id + user_id + ':status', 'input_birth_time')
 
         if user_status == 'confirm_user_info' and postback['action'] == 'confirm_user_info':
-
             if postback['reply'] == 'yes':
                 r.set(channel_id + user_id + ':status', 'contacted')
-
                 user_gender = r.get(channel_id + user_id + ':gender')
                 user_birth_day = r.get(channel_id + user_id + ':birth_day')
                 user_birth_time = r.get(channel_id + user_id + ':birth_time')
-
                 message = main_menu_template(channel_id, user_name)
-
                 # Store user info after complete the first stage of the info collection
                 utils.store_user_info(channel_id, user_id, user_name, user_gender,
                                       user_birth_day, user_birth_time, 'contacted')
-
             if postback['reply'] == 'no':
-                message = TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_second'))
+                message = input_name(channel_id)
                 r.set(channel_id + user_id + ':status', 'input_name')
 
         if user_status == 'contacted' and postback['action'] == 'show_menu':
@@ -122,33 +109,33 @@ def handle(event, line_bot_api):
 
         # TODO: 找貴人功能: 輸入了命盤編號後，要依照命盤編號找出對應的人的生辰時日，再計算彼此向性
         if user_status == 'contacted' and postback['action'] == 'input_fate_num':
-            message = TextSendMessage(text = utils.get_line_message(channel_id, 'input_fate_num'))
+            message = input_fate_num(channel_id)
             r.set(channel_id + user_id + ':action', 'input_fate_num')
 
-        if user_status == 'contacted' and postback['action'] == 'ask_instructions':
-            message = service_2_instructions(channel_id, user_name)
+        if user_status == 'contacted' and postback['action'] == 'input_fate_instructions':
+            message = input_fate_instructions(channel_id, user_name)
 
         if user_status == 'contacted' and postback['action'] == 'service_3':
             message = service_3_menu(channel_id, user_name)
 
         if user_status == 'contacted' and postback['action'] == 'line_booking':
-            message = line_booking_template()
+            message = line_booking()
 
-        if user_status == 'contacted' and postback['action'] == 'book_time':
+        if user_status == 'contacted' and postback['action'] == 'confirm_book_time':
             book_date, weekday, time = postback['date'], postback['weekday'], postback['time']
             message = confirm_book_time(book_date, weekday, time)
             r.set(channel_id + user_id + ':date', book_date)
             r.set(channel_id + user_id + ':weekday', weekday)
             r.set(channel_id + user_id + ':time', time)
 
-        if user_status == 'contacted' and postback['action'] == 'confirm_book_time':
+        if user_status == 'contacted' and postback['action'] == 'input_phone':
             if postback['reply'] == 'yes':
                 message = input_phone(channel_id, user_name)
-                r.set(channel_id + user_id + ':action', 'input_phone')
+                r.set(channel_id + user_id + ':action', 'confirm_phone')
             if postback['reply'] == 'no':
                 message = main_menu_template(channel_id, user_name)
 
-        if user_status == 'contacted' and postback['action'] == 'confirm_phone':
+        if user_status == 'contacted' and postback['action'] == 'show_booking_result':
 
             if postback['reply'] == 'yes':
                 phone = postback['phone']
@@ -167,7 +154,7 @@ def handle(event, line_bot_api):
         if user_status == 'contacted' and postback['action'] == 'service_4':
             message = service_4_menu_template(channel_id)
 
-        if user_status == 'contacted' and postback['action'] == 'query_fate_num':
+        if user_status == 'contacted' and postback['action'] == 'return_fate_num':
             # TODO: 查詢命盤編號: 用 user_id 跟 channel_id 找出 fate_num
             message = return_fate_num(channel_id)
 

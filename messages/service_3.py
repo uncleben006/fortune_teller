@@ -69,12 +69,12 @@ def confirm_book_time(book_date, weekday, time):
                 PostbackAction(
                     label = '是',
                     display_text = '是',
-                    data = 'action=confirm_book_time&reply=yes'
+                    data = 'action=input_phone&reply=yes'
                 ),
                 PostbackAction(
                     label = '否',
                     display_text = '否',
-                    data = 'action=confirm_book_time&reply=no'
+                    data = 'action=input_phone&reply=no'
                 )
             ]
         )
@@ -87,7 +87,7 @@ def input_phone(channel_id, user_name):
     )
 
 
-def line_booking_template():
+def line_booking():
     today = date.today()
     week_dict = {0: '一', 1: '二', 2: '三', 3: '四', 4: '五', 5: '六', 6: '日'}
     week_img = {
@@ -111,17 +111,17 @@ def line_booking_template():
                     actions = [
                         PostbackAction(
                             label = '14:00',
-                            data = 'action=book_time&time=14:00&date=' + today.strftime('%m%d') + '&weekday=' +
+                            data = 'action=confirm_book_time&time=14:00&date=' + today.strftime('%m%d') + '&weekday=' +
                                    week_dict[today.weekday()]
                         ),
                         PostbackAction(
                             label = '16:00',
-                            data = 'action=book_time&time=16:00&date=' + today.strftime('%m%d') + '&weekday=' +
+                            data = 'action=confirm_book_time&time=16:00&date=' + today.strftime('%m%d') + '&weekday=' +
                                    week_dict[today.weekday()]
                         ),
                         PostbackAction(
                             label = '19:00',
-                            data = 'action=book_time&time=19:00&date=' + today.strftime('%m%d') + '&weekday=' +
+                            data = 'action=confirm_book_time&time=19:00&date=' + today.strftime('%m%d') + '&weekday=' +
                                    week_dict[today.weekday()]
                         )
                     ]
@@ -134,17 +134,17 @@ def line_booking_template():
                     actions = [
                         PostbackAction(
                             label = '10:00',
-                            data = 'action=book_time&time=10:00&date=' + (today + timedelta(days = 1)).strftime(
+                            data = 'action=confirm_book_time&time=10:00&date=' + (today + timedelta(days = 1)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 1)).weekday()]
                         ),
                         PostbackAction(
                             label = '11:00',
-                            data = 'action=book_time&time=11:00&date=' + (today + timedelta(days = 1)).strftime(
+                            data = 'action=confirm_book_time&time=11:00&date=' + (today + timedelta(days = 1)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 1)).weekday()]
                         ),
                         PostbackAction(
                             label = '無',
-                            data = 'action=book_time'
+                            data = 'action=confirm_book_time'
                         )
                     ]
                 ),
@@ -156,17 +156,17 @@ def line_booking_template():
                     actions = [
                         PostbackAction(
                             label = '14:00',
-                            data = 'action=book_time&time=14:00&date=' + (today + timedelta(days = 2)).strftime(
+                            data = 'action=confirm_book_time&time=14:00&date=' + (today + timedelta(days = 2)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 2)).weekday()]
                         ),
                         PostbackAction(
                             label = '16:00',
-                            data = 'action=book_time&time=16:00&date=' + (today + timedelta(days = 2)).strftime(
+                            data = 'action=confirm_book_time&time=16:00&date=' + (today + timedelta(days = 2)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 2)).weekday()]
                         ),
                         PostbackAction(
                             label = '19:00',
-                            data = 'action=book_time&time=19:00&date=' + (today + timedelta(days = 2)).strftime(
+                            data = 'action=confirm_book_time&time=19:00&date=' + (today + timedelta(days = 2)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 2)).weekday()]
                         )
                     ]
@@ -179,17 +179,17 @@ def line_booking_template():
                     actions = [
                         PostbackAction(
                             label = '14:00',
-                            data = 'action=book_time&time=14:00&date=' + (today + timedelta(days = 3)).strftime(
+                            data = 'action=confirm_book_time&time=14:00&date=' + (today + timedelta(days = 3)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 3)).weekday()]
                         ),
                         PostbackAction(
                             label = '16:00',
-                            data = 'action=book_time&time=16:00&date=' + (today + timedelta(days = 3)).strftime(
+                            data = 'action=confirm_book_time&time=16:00&date=' + (today + timedelta(days = 3)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 3)).weekday()]
                         ),
                         PostbackAction(
                             label = '19:00',
-                            data = 'action=book_time&time=19:00&date=' + (today + timedelta(days = 3)).strftime(
+                            data = 'action=confirm_book_time&time=19:00&date=' + (today + timedelta(days = 3)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 3)).weekday()]
                         )
                     ]
@@ -202,17 +202,17 @@ def line_booking_template():
                     actions = [
                         PostbackAction(
                             label = '14:00',
-                            data = 'action=book_time&time=14:00&date=' + (today + timedelta(days = 4)).strftime(
+                            data = 'action=confirm_book_time&time=14:00&date=' + (today + timedelta(days = 4)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 4)).weekday()]
                         ),
                         PostbackAction(
                             label = '16:00',
-                            data = 'action=book_time&time=16:00&date=' + (today + timedelta(days = 4)).strftime(
+                            data = 'action=confirm_book_time&time=16:00&date=' + (today + timedelta(days = 4)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 4)).weekday()]
                         ),
                         PostbackAction(
                             label = '19:00',
-                            data = 'action=book_time&time=19:00&date=' + (today + timedelta(days = 4)).strftime(
+                            data = 'action=confirm_book_time&time=19:00&date=' + (today + timedelta(days = 4)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 4)).weekday()]
                         )
                     ]
@@ -225,17 +225,17 @@ def line_booking_template():
                     actions = [
                         PostbackAction(
                             label = '14:00',
-                            data = 'action=book_time&time=14:00&date=' + (today + timedelta(days = 5)).strftime(
+                            data = 'action=confirm_book_time&time=14:00&date=' + (today + timedelta(days = 5)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 5)).weekday()]
                         ),
                         PostbackAction(
                             label = '16:00',
-                            data = 'action=book_time&time=16:00&date=' + (today + timedelta(days = 5)).strftime(
+                            data = 'action=confirm_book_time&time=16:00&date=' + (today + timedelta(days = 5)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 5)).weekday()]
                         ),
                         PostbackAction(
                             label = '19:00',
-                            data = 'action=book_time&time=19:00&date=' + (today + timedelta(days = 5)).strftime(
+                            data = 'action=confirm_book_time&time=19:00&date=' + (today + timedelta(days = 5)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 5)).weekday()]
                         )
                     ]
@@ -248,17 +248,17 @@ def line_booking_template():
                     actions = [
                         PostbackAction(
                             label = '14:00',
-                            data = 'action=book_time&time=14:00&date=' + (today + timedelta(days = 6)).strftime(
+                            data = 'action=confirm_book_time&time=14:00&date=' + (today + timedelta(days = 6)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 6)).weekday()]
                         ),
                         PostbackAction(
                             label = '16:00',
-                            data = 'action=book_time&time=16:00&date=' + (today + timedelta(days = 6)).strftime(
+                            data = 'action=confirm_book_time&time=16:00&date=' + (today + timedelta(days = 6)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 6)).weekday()]
                         ),
                         PostbackAction(
                             label = '19:00',
-                            data = 'action=book_time&time=19:00&date=' + (today + timedelta(days = 6)).strftime(
+                            data = 'action=confirm_book_time&time=19:00&date=' + (today + timedelta(days = 6)).strftime(
                                 '%m%d') + '&weekday=' + week_dict[(today + timedelta(days = 6)).weekday()]
                         )
                     ]

@@ -4,6 +4,7 @@ from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
 
+from messages.crm import welcome_message
 from messages.general import main_menu_template, send_message
 from helper import utils
 
@@ -23,22 +24,9 @@ def handle(event, line_bot_api):
     user_id = user_profile.user_id
     channel_id = r.get(user_id + ':channel_id')
 
-    # if user not exist in db, start collect user info
+    # if user not exist in db, pass welcome message and start collect user info
     if not utils.is_user(user_id, channel_id):
-        line_bot_api.reply_message(
-            event.reply_token,
-            [
-                # 從 redis 拿 message，若沒有則從 DB 搜尋全部並且存進 redis ( channel_id+context_id => message)
-                ImageSendMessage(
-                    original_content_url = utils.get_line_message(channel_id, 'welcome_image'),
-                    preview_image_url = utils.get_line_message(channel_id, 'welcome_image')
-                ),
-                TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_first')),
-                TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_second')),
-            ]
-        )
-
-        # use redis to update user status
+        message = welcome_message(channel_id)
         r.set(channel_id+user_id + ':status', 'input_name')
 
     # else get the user info and set in redis
@@ -53,4 +41,4 @@ def handle(event, line_bot_api):
         user_name = user_data[2]
 
         message = main_menu_template(channel_id, user_name)
-        send_message(event, line_bot_api, message)
+    send_message(event, line_bot_api, message)

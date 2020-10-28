@@ -1,6 +1,22 @@
-from linebot.models import TemplateSendMessage, ConfirmTemplate, PostbackAction, TextSendMessage
+from linebot.models import TemplateSendMessage, ConfirmTemplate, PostbackAction, TextSendMessage, ImageSendMessage
 
 from helper import utils
+
+
+def welcome_message(channel_id):
+    template = [
+        ImageSendMessage(
+            original_content_url = utils.get_line_message(channel_id, 'welcome_image'),
+            preview_image_url = utils.get_line_message(channel_id, 'welcome_image')
+        ),
+        TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text')),
+        input_name(channel_id)
+    ]
+    return template
+
+
+def input_name(channel_id):
+    return TextSendMessage(text = utils.get_line_message(channel_id, 'input_name')),
 
 
 def confirm_name(channel_id, text):
@@ -132,12 +148,12 @@ def confirm_phone(channel_id, text):
                 PostbackAction(
                     label = '是',
                     display_text = '是',
-                    data = 'action=confirm_phone&reply=yes&phone=' + text
+                    data = 'action=show_booking_result&reply=yes&phone=' + text
                 ),
                 PostbackAction(
                     label = '否',
                     display_text = '否',
-                    data = 'action=confirm_phone&reply=no'
+                    data = 'action=show_booking_result&reply=no'
                 )
             ]
         )

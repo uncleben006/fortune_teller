@@ -70,7 +70,15 @@ def handle(event, line_bot_api):
             # TODO: 找貴人功能: 輸入了命盤編號後，要依照命盤編號找出對應的人的生辰時日，再計算彼此向性
             message = fate_num_result(channel_id, user_name)
             r.delete(channel_id+user_id + ':action')
-        if user_action == 'input_phone':
+        if user_action == 'confirm_phone':
             message = confirm_phone(channel_id, event.message.text)
 
-        send_message(event, line_bot_api, message)
+        # send message
+        if message:
+            send_message(event, line_bot_api, message)
+        else:
+            # TODO: 新增意見表格: 紀錄使用者傳過來的意見
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text = '感謝您的意見，我們會紀錄下來並且盡量改善')
+            )
