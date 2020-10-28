@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 from linebot.models import TextSendMessage
 
 from controller.crm import confirm_phone, confirm_name, confirm_birth_day, confirm_birth_time
+from controller.general import send_message
 from controller.service_2 import fate_num_result
+from helper import utils
 
 # start app
 app = Flask(__name__)
@@ -20,24 +22,34 @@ def handle(event, line_bot_api):
     user_profile = line_bot_api.get_profile(event.source.user_id)
     user_id = user_profile.user_id
     channel_id = r.get(user_id + ':channel_id')
-
-    app.logger.info("User [" + user_id + "] has send message: " + event.message.text)
+    user_name = r.get(channel_id + user_id + ':name')
     user_status = r.get(channel_id+user_id + ':status')
     user_action = r.get(channel_id+user_id + ':action')
 
-    if event.message.text == 'status':
+    log = "User {user}  send message: {message}"\
+        .format(user = {'id': user_id, 'name': user_name, 'status': user_status, 'action': user_action}, message = event.message.text)
+    app.logger.info(log)
+
+    if event.message.text == 'st':
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text = user_status)
         )
 
-    if event.message.text == 'clear':
+    if event.message.text == 'cr':
         # delete redis which key prefix is current channel_id
         for key in r.scan_iter(channel_id + "*"):
             r.delete(key)
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text = 'delete redis cache')
+        )
+
+    if event.message.text == 'rf':
+        utils.refresh_line_message(channel_id)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text = 'refresh redis cache')
         )
 
     if user_status:
@@ -54,11 +66,9 @@ def handle(event, line_bot_api):
 
         # services
         if user_action == 'input_fate_num':
-            # TODO: 這邊要加一段，用 fate number (命盤編號) 來 query 使用者資料的 SQL
-            app.logger.info('Fate num:' + event.message.text)
-            user_name = r.get(channel_id + user_id + ':name')
-            fate_num_result(event, line_bot_api, user_name)
+            # TODO: 找貴人功能: 輸入了命盤編號後，要依照命盤編號找出對應的人的生辰時日，再計算彼此向性
+            message = fate_num_result(channel_id, user_name)
+            send_message(event, line_bot_api, message)
             r.delete(channel_id+user_id + ':action')
         if user_action == 'input_phone':
-            app.logger.info('Phone num:' + event.message.text)
             confirm_phone(event, line_bot_api, channel_id)

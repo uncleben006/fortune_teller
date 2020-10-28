@@ -107,23 +107,22 @@ def get_line_message(channel_id, context_id):
     if r.exists(channel_id+context_id):
         return r.get(message_id)
     else:
-        conn = psycopg2.connect(os.getenv('DATABASE_URL'))
-        cursor = conn.cursor()
-
-        sql = "SELECT context_id, message FROM line_message WHERE channel_id = '{channel_id}'"
-        sql = sql.format(channel_id = channel_id)
-
-        app.logger.warning("No message in Redis, start query: " + sql)
-        cursor.execute(sql)
-        results = cursor.fetchall()
-
-        for result in results:
-            context_id = result[0]
-            message = result[1]
-            r.set(channel_id+context_id, message)
-
-        app.logger.info("Results: " + str(results))
-        cursor.close()
-        conn.close()
-
+        refresh_line_message(channel_id)
         return r.get(message_id)
+
+
+def refresh_line_message(channel_id):
+    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+    cursor = conn.cursor()
+    sql = "SELECT context_id, message FROM line_message WHERE channel_id = '{channel_id}'"
+    sql = sql.format(channel_id = channel_id)
+    app.logger.warning("No message in Redis, start query: " + sql)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    for result in results:
+        context_id = result[0]
+        message = result[1]
+        r.set(channel_id + context_id, message)
+    app.logger.info("Results: " + str(results))
+    cursor.close()
+    conn.close()

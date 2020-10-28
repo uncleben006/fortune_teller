@@ -4,7 +4,7 @@ from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
 
-from controller.postback_event import show_menu
+from controller.general import main_menu_template, send_message
 from helper import utils
 
 # start app
@@ -51,4 +51,6 @@ def handle(event, line_bot_api):
         r.set(channel_id+user_id + ':birth_time', user_data[5])
         r.set(channel_id+user_id + ':status', user_data[6])
         user_name = user_data[2]
-        show_menu(event, line_bot_api, user_name)
+
+        message = main_menu_template(channel_id, user_name)
+        send_message(event, line_bot_api, message)
