@@ -2,7 +2,7 @@ from datetime import date, timedelta
 
 from linebot.models import TextSendMessage, TemplateSendMessage, PostbackAction, ConfirmTemplate, ButtonsTemplate,\
     URIAction, CarouselTemplate, CarouselColumn
-from controller.general import main_menu_template
+from messages.general import main_menu_template
 from helper import utils
 
 

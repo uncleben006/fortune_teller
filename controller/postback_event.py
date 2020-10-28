@@ -5,12 +5,12 @@ from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage
 
-from controller.crm import confirm_gender, confirm_user_info, input_birth_day, input_birth_time
-from controller.general import send_message, main_menu_template
-from controller.service_1 import love_fate, wealth_fate, service_1_menu_template
-from controller.service_2 import service_2_instructions, service_2_menu_template
-from controller.service_3 import service_3_menu, confirm_book_time, booking_result, line_booking_template, input_phone
-from controller.service_4 import return_fate_num, service_4_menu_template
+from messages.crm import confirm_gender, confirm_user_info, input_birth_day, input_birth_time
+from messages.general import send_message, main_menu_template
+from messages.service_1 import love_fate, wealth_fate, service_1_menu_template
+from messages.service_2 import service_2_instructions, service_2_menu_template
+from messages.service_3 import service_3_menu, confirm_book_time, booking_result, line_booking_template, input_phone
+from messages.service_4 import return_fate_num, service_4_menu_template
 from helper import utils
 
 # start app

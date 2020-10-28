@@ -4,7 +4,7 @@ from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import ImageSendMessage, TextSendMessage
 
-from controller.general import main_menu_template, send_message
+from messages.general import main_menu_template, send_message
 from helper import utils
 
 # start app

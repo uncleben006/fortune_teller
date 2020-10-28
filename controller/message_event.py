@@ -4,9 +4,9 @@ from flask import Flask
 from dotenv import load_dotenv
 from linebot.models import TextSendMessage
 
-from controller.crm import confirm_phone, confirm_name, confirm_birth_day, confirm_birth_time
-from controller.general import send_message
-from controller.service_2 import fate_num_result
+from messages.crm import confirm_phone, confirm_name, confirm_birth_day, confirm_birth_time
+from messages.general import send_message
+from messages.service_2 import fate_num_result
 from helper import utils
 
 # start app
