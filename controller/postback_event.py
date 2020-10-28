@@ -29,6 +29,7 @@ def handle(event, line_bot_api):
     channel_id = r.get(user_id + ':channel_id')
     user_name = r.get(channel_id + user_id + ':name')
     user_status = r.get(channel_id + user_id + ':status')
+    message = None
 
     log = "User {user}  postback message: {postback}"\
         .format(user = {'id': user_id, 'name': user_name, 'status': user_status}, postback = str(postback))
@@ -49,7 +50,6 @@ def handle(event, line_bot_api):
 
             if postback['reply'] == 'no':
                 message = TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_second'))
-                send_message(event, line_bot_api, message)
                 r.set(channel_id + user_id + ':status', 'input_name')
 
         if user_status == 'confirm_gender' and postback['action'] == 'confirm_gender':
@@ -95,7 +95,6 @@ def handle(event, line_bot_api):
                 user_birth_time = r.get(channel_id + user_id + ':birth_time')
 
                 message = main_menu_template(channel_id, user_name)
-                send_message(event, line_bot_api, message)
 
                 # Store user info after complete the first stage of the info collection
                 utils.store_user_info(channel_id, user_id, user_name, user_gender,
@@ -103,54 +102,40 @@ def handle(event, line_bot_api):
 
             if postback['reply'] == 'no':
                 message = TextSendMessage(text = utils.get_line_message(channel_id, 'welcome_text_second'))
-                send_message(event, line_bot_api, message)
-
                 r.set(channel_id + user_id + ':status', 'input_name')
 
         if user_status == 'contacted' and postback['action'] == 'show_menu':
             message = main_menu_template(channel_id, user_name)
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'service_1':
             message = service_1_menu_template(channel_id, user_name)
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'wealth_fate':
             message = wealth_fate(channel_id, user_name)
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'love_fate':
             message = love_fate(channel_id, user_name)
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'service_2':
             message = service_2_menu_template(channel_id, user_name)
-            send_message(event, line_bot_api, message)
 
         # TODO: 找貴人功能: 輸入了命盤編號後，要依照命盤編號找出對應的人的生辰時日，再計算彼此向性
         if user_status == 'contacted' and postback['action'] == 'input_fate_num':
             message = TextSendMessage(text = utils.get_line_message(channel_id, 'input_fate_num'))
-            send_message(event, line_bot_api, message)
-
             r.set(channel_id + user_id + ':action', 'input_fate_num')
 
         if user_status == 'contacted' and postback['action'] == 'ask_instructions':
             message = service_2_instructions(channel_id, user_name)
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'service_3':
             message = service_3_menu(channel_id, user_name)
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'line_booking':
             message = line_booking_template()
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'book_time':
             book_date, weekday, time = postback['date'], postback['weekday'], postback['time']
             message = confirm_book_time(book_date, weekday, time)
-            send_message(event, line_bot_api, message)
-
             r.set(channel_id + user_id + ':date', book_date)
             r.set(channel_id + user_id + ':weekday', weekday)
             r.set(channel_id + user_id + ':time', time)
@@ -158,12 +143,9 @@ def handle(event, line_bot_api):
         if user_status == 'contacted' and postback['action'] == 'confirm_book_time':
             if postback['reply'] == 'yes':
                 message = input_phone(channel_id, user_name)
-                send_message(event, line_bot_api, message)
-
                 r.set(channel_id + user_id + ':action', 'input_phone')
             if postback['reply'] == 'no':
                 message = main_menu_template(channel_id, user_name)
-                send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'confirm_phone':
 
@@ -174,22 +156,18 @@ def handle(event, line_bot_api):
                 time = r.get(channel_id + user_id + ':time')
 
                 message = booking_result(channel_id, user_name, phone, book_date, weekday, time)
-                send_message(event, line_bot_api, message)
-
                 r.delete(channel_id + user_id + ':action')
                 # TODO: 結束預約流程後，要把使用者的預約資訊存入 postgreSQL
 
             if postback['reply'] == 'no':
                 message = input_phone(channel_id, user_name)
-                send_message(event, line_bot_api, message)
-
                 r.set(channel_id + user_id + ':action', 'input_phone')
 
         if user_status == 'contacted' and postback['action'] == 'service_4':
             message = service_4_menu_template(channel_id)
-            send_message(event, line_bot_api, message)
 
         if user_status == 'contacted' and postback['action'] == 'query_fate_num':
             # TODO: 查詢命盤編號: 用 user_id 跟 channel_id 找出 fate_num
             message = return_fate_num(channel_id)
-            send_message(event, line_bot_api, message)
+
+    send_message(event, line_bot_api, message)
