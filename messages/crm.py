@@ -16,7 +16,7 @@ def welcome_message(channel_id):
 
 
 def input_name(channel_id):
-    return TextSendMessage(text = utils.get_line_message(channel_id, 'input_name')),
+    return TextSendMessage(text = utils.get_line_message(channel_id, 'input_name'))
 
 
 def confirm_name(channel_id, text):

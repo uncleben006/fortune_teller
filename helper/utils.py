@@ -67,19 +67,20 @@ def get_user(user_id, channel_id):
 
 # Store user info after complete the first stage info collection
 def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day, user_birth_time, user_status):
-    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
-    cursor = conn.cursor()
 
-    # sql = "INSERT INTO line_user \
-    # VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}') \
-    # ON CONFLICT (id) DO UPDATE \
-    # SET channel_id = '{channel_id}', name = '{user_name}', \
-    # gender = '{user_gender}', birth_day = '{user_birth_day}', \
-    # birth_time = '{user_birth_time}', status = '{user_status}' \
-    # WHERE line_user.id = '{user_id}' "
+    if not is_user(user_id, channel_id):
+        sql = "INSERT INTO line_user \
+                VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}')"
 
-    sql = "INSERT INTO line_user \
-    VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}')"
+    else:
+        sql = "UPDATE line_user \
+        SET name = '{user_name}', \
+            gender = '{user_gender}', \
+            birth_day = '{user_birth_day}', \
+            birth_time = '{user_birth_time}', \
+            status = '{user_status}' \
+        WHERE id = '{user_id}' \
+        AND channel_id = '{channel_id}'"
 
     sql = sql.format(channel_id = channel_id,
                      user_id = user_id,
@@ -88,11 +89,12 @@ def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day,
                      user_birth_day = user_birth_day,
                      user_birth_time = user_birth_time,
                      user_status = user_status)
-    app.logger.info("Insert user info: " + sql)
 
+    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+    cursor = conn.cursor()
+    app.logger.info("Insert user info: " + sql)
     cursor.execute(sql)
     conn.commit()
-
     cursor.close()
     conn.close()
 

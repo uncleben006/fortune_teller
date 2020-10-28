@@ -2,7 +2,6 @@ import os
 import redis
 from flask import Flask
 from dotenv import load_dotenv
-from linebot.models import ImageSendMessage, TextSendMessage
 
 from messages.crm import welcome_message
 from messages.general import main_menu_template, send_message
@@ -23,6 +22,7 @@ def handle(event, line_bot_api):
     app.logger.info("A user has followed: " + str(user_profile))
     user_id = user_profile.user_id
     channel_id = r.get(user_id + ':channel_id')
+    message = None
 
     # if user not exist in db, pass welcome message and start collect user info
     if not utils.is_user(user_id, channel_id):
