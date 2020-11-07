@@ -18,7 +18,7 @@ r = redis.from_url(redis_url, decode_responses = True, charset = 'UTF-8')
 def get_channel(channel_id):
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     cursor = conn.cursor()
-    sql = "SELECT secret, access_token FROM channel WHERE channel.id = '%s' " % channel_id
+    sql = "SELECT secret, access_token FROM line_channel WHERE line_channel.channel_id = '%s' " % channel_id
     app.logger.info("Start query channel: " + sql)
     cursor.execute(sql)
     result = cursor.fetchone()
@@ -32,7 +32,7 @@ def get_channel(channel_id):
 def is_user(user_id, channel_id):
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     cursor = conn.cursor()
-    sql = "SELECT exists(SELECT 1 FROM line_user WHERE id = '{user_id}' AND channel_id = '{channel_id}' )"
+    sql = "SELECT exists(SELECT 1 FROM line_user WHERE user_id = '{user_id}' AND channel_id = '{channel_id}' )"
     sql = sql.format(channel_id = channel_id, user_id = user_id)
     app.logger.info("Start check user: " + sql)
     cursor.execute(sql)
@@ -49,8 +49,8 @@ def get_user(user_id, channel_id):
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     cursor = conn.cursor()
 
-    sql = "SELECT channel_id, id, name, gender, birth_day, birth_time, status \
-    FROM line_user WHERE id = '{user_id}' \
+    sql = "SELECT channel_id, user_id, name, gender, birth_day, birth_time, status \
+    FROM line_user WHERE user_id = '{user_id}' \
     AND channel_id = '{channel_id}'"
 
     sql = sql.format(channel_id = channel_id,
@@ -70,6 +70,7 @@ def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day,
 
     if not is_user(user_id, channel_id):
         sql = "INSERT INTO line_user \
+                ( channel_id, user_id, name, gender, birth_day, birth_time, status ) \
                 VALUES  ('{channel_id}','{user_id}','{user_name}','{user_gender}','{user_birth_day}','{user_birth_time}','{user_status}')"
 
     else:
@@ -79,7 +80,7 @@ def store_user_info(channel_id, user_id, user_name, user_gender, user_birth_day,
             birth_day = '{user_birth_day}', \
             birth_time = '{user_birth_time}', \
             status = '{user_status}' \
-        WHERE id = '{user_id}' \
+        WHERE user_id = '{user_id}' \
         AND channel_id = '{channel_id}'"
 
     sql = sql.format(channel_id = channel_id,
