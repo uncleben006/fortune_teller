@@ -37,7 +37,7 @@ def handle(event, line_bot_api):
 
     if user_status:
 
-        if postback['action'] == 'confirm_gender':
+        if postback['action'] == 'confirm_gender' and user_status != 'confirm_gender':
             user_status = 'confirm_gender'
             postback['reply'] = r.get(channel_id + user_id + ':gender')
 
@@ -67,7 +67,9 @@ def handle(event, line_bot_api):
         if user_status == 'confirm_birth_time' and postback['action'] == 'confirm_birth_time':
             if postback['reply'] == 'yes':
                 user_gender = r.get(channel_id + user_id + ':gender')
+                app.logger.info(user_gender)
                 user_gender = {'female': '女', 'male': '男'}[user_gender]
+                app.logger.info(user_gender)
                 user_birth_day = r.get(channel_id + user_id + ':birth_day')
                 user_birth_time = postback['birth_time']
                 message = confirm_user_info(channel_id, user_name, user_gender, user_birth_day, user_birth_time)
